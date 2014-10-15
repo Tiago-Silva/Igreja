@@ -1,0 +1,35 @@
+@CHARSET "UTF-8";
+body {
+	background-color: WhiteSmoke
+}
+
+fieldset {
+    width: 100%;
+    height: 50%;
+    padding-left: 5%;
+    background: #FFFFFF;
+    
+}
+
+fieldset legend {
+	background-color: WhiteSmoke;
+}
+
+.btn-success {
+	background-color: #2FD32F;
+	color: White;
+	font-style: normal;
+	font-family: Serif, Sans;
+	font-weight: bold
+}
+
+.input-focus {
+	border-color: #7EE1FA;
+}
+
+#scroll {
+	width: 100%;
+	padding-left: 3%;
+	padding-right: 3%;
+	overflow: auto;
+}

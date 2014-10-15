@@ -1,0 +1,64 @@
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+<tiles-definitions>
+	
+	<definition name="main" template="/views/templates/main.jsp">
+		<put-attribute name="titulo" value="SGI - Sistema de Gestão de Igrejas"/>
+		<put-attribute name="cabecalho" value="/views/templates/cabecalho.jsp"/>
+		<put-attribute name="rodape" value="/views/templates/rodape.jsp"/>
+	</definition>
+	
+	<definition name="home"  extends="main" >
+    	<put-attribute name="conteudo" value="/views/home.jsp"/>
+    </definition>
+	
+    <definition name="pastor/PastorCadastro"  extends="main" >
+    	<put-attribute name="conteudo" value="/views/pastor/PastorCadastro.jsp"/>
+    </definition>
+    <definition name="pastor/ListaPastor"  extends="main" >
+    	<put-attribute name="conteudo" value="/views/pastor/ListaPastor.jsp"/>
+    </definition>
+    <definition name="pastor/AlteraPastor"  extends="main" >
+    	<put-attribute name="conteudo" value="/views/pastor/AlteraPastor.jsp"/>
+    </definition>
+    
+    
+    <definition name="igreja/IgrejaCadastro"  extends="main" >
+    	<put-attribute name="conteudo" value="/views/igreja/IgrejaCadastro.jsp"/>
+    </definition>
+    <definition name="igreja/ListaIgreja"  extends="main" >
+    	<put-attribute name="conteudo" value="/views/igreja/ListaIgreja.jsp"/>
+    </definition>
+    <definition name="igreja/ListaIgrejaTipo"  extends="main" >
+    	<put-attribute name="conteudo" value="/views/igreja/ListaIgreja.jsp"/>
+    </definition>
+    <definition name="igreja/AlteraIgreja"  extends="main" >
+    	<put-attribute name="conteudo" value="/views/igreja/AlteraIgreja.jsp"/>
+    </definition>
+       
+    <definition name="membro/MembroCadastro"  extends="main" >
+    	<put-attribute name="conteudo" value="/views/membro/MembroCadastro.jsp"/>
+    </definition>
+    <definition name="membro/ListaMembro"  extends="main" >
+    	<put-attribute name="conteudo" value="/views/membro/ListaMembro.jsp"/>
+    </definition>
+    <definition name="membro/AlteraMembro"  extends="main" >
+    	<put-attribute name="conteudo" value="/views/membro/AlteraMembro.jsp"/>
+    </definition>
+    
+    <definition name="caixa/CaixaCadastro"  extends="main" >
+    	<put-attribute name="conteudo" value="/views/caixa/CaixaCadastro.jsp"/>
+    </definition>
+    <definition name="caixa/CaixaCadastroPesquisa"  extends="main" >
+    	<put-attribute name="conteudo" value="/views/caixa/CaixaCadastroPesquisa.jsp"/>
+    </definition>
+    
+    <definition name="dizimo/DizimoCadastro"  extends="main" >
+    	<put-attribute name="conteudo" value="/views/dizimo/DizimoCadastro.jsp"/>
+    </definition>
+    <definition name="dizimo/RelatorioDizimo"  extends="main" >
+    	<put-attribute name="conteudo" value="/views/dizimo/RelatorioDizimo.jsp"/>
+    </definition>
+
+</tiles-definitions>

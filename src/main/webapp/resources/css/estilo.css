@@ -1,0 +1,33 @@
+.chamada {
+	background: url(../images/fundo_chamada.png);
+	background-repeat: repeat-y;
+	color: white;
+	padding: 2.0em;
+	min-height: 60px;
+	padding: 1.0em;
+}
+
+#rodape {
+	padding-top: 1em;
+	background: #23BBA8;
+	margin-top: 3em;
+	position: relative;
+	bottom: 0;
+	width: 100%;
+	height: 80px;
+	color: white;
+	font-weight: bold;
+	padding-left: 2em;
+	padding-right: 2em;
+}
+
+#cabecalho {
+	background: #23BBA8;
+	width: 100%;
+}
+
+.erro {
+	color: red;
+	font-weight: normal;
+	padding: 0.2em;
+}

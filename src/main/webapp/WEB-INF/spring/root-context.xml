@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:jee="http://www.springframework.org/schema/jee"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+ http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd">
+
+    <!-- Para buscar o dataSource por JNDI, permitindo alterar BD sem modificar WAR -->
+    <!-- <jee:jndi-lookup id="dataSource" jndi-name="java:comp/env/jdbc/dataSource" /> -->
+    
+    <!-- 
+		O DataSource da aplicação.
+		Neste caso, este só deve ser usado em ambiente de desenvolvimento, pois não nos
+		oferece um pool de conexões.
+		A cada chamada ao método getConnection() do bean obtido uma nova conexão é obtida.
+	 -->
+	 <!-- <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="username" value="root"/>
+		<property name="password" value="12123636"/>
+		<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+		<property name="url" value="jdbc:mysql://localhost:3306/curso"/>
+	</bean> --> 
+	
+	<!-- DataSource usando um pool C3P0 -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		
+		<property name="driverClass" value="com.mysql.jdbc.Driver"/>
+		<property name="user" value="root"/>
+		<property name="password" value="12123636"/>
+		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/igreja"/>
+		
+		<property name="maxPoolSize" value="10"/>
+		<property name="acquireIncrement" value="1"/>
+		<property name="maxIdleTime" value="120"/>
+		<property name="acquireRetryAttempts" value="10"/>
+		<property name="initialPoolSize" value="1"/>
+			  
+	</bean>
+	
+
+    <!-- Configuração do EntityManagerFactory -->
+    <bean id="entityManagerFactory"
+        class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="packagesToScan" value="br.com.igreja.entidades" />
+        <property name="persistenceProviderClass" value="org.hibernate.ejb.HibernatePersistence" />
+        <property name="jpaProperties">
+                <props>
+                        <prop key="hibernate.hbm2ddl.auto">update</prop>
+                </props>
+        </property>
+    </bean>
+
+    <!-- Configuração do TransactionManager -->
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
+    
+</beans>

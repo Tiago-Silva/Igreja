@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+	
+
+	<security:http auto-config="true" use-expressions="true" access-denied-page="/?error=1">
+		<security:session-management invalid-session-url="/" session-authentication-error-url="/">
+			<security:concurrency-control max-sessions="1" expired-url="/"/>
+		</security:session-management>		
+		<security:form-login
+			login-page="/"
+			default-target-url="/"
+			authentication-failure-url="/?error" always-use-default-target="true"/>
+		
+		<security:logout logout-success-url="/?logout=1" invalidate-session="true" delete-cookies="JSESSIONID"/>
+			
+			<security:intercept-url pattern="/CaixaCadastro/**" access="hasAnyRole('ROLE_TESOUREIRO_SEDE','ROLE_TESOUREIRO_CONGREGACAO')"/>
+			<security:intercept-url pattern="/CaixaCadastroCongregacao/**" access="hasAnyRole('ROLE_TESOUREIRO_SEDE','ROLE_TESOUREIRO_CONGREGACAO')"/>
+			<security:intercept-url pattern="/buscaCongregacao/**" access="hasAnyRole('ROLE_TESOUREIRO_SEDE','ROLE_TESOUREIRO_CONGREGACAO')"/>
+			
+			<security:intercept-url pattern="/IgrejaCadastro/**" access="hasAnyRole('ROLE_SECRETARIO_SEDE')"/>
+			<security:intercept-url pattern="/ListaIgreja/**" access="hasAnyRole('ROLE_SECRETARIO_SEDE','ROLE_TESOUREIRO_SEDE')"/>
+			<security:intercept-url pattern="/ListaIgrejaTipo/**" access="hasAnyRole('ROLE_SECRETARIO_SEDE','ROLE_TESOUREIRO_SEDE')"/>
+			<security:intercept-url pattern="/mostraIgreja/**" access="hasAnyRole('ROLE_SECRETARIO_SEDE','ROLE_TESOUREIRO_SEDE')"/>
+			<security:intercept-url pattern="/AlteraIgreja/**" access="hasAnyRole('ROLE_SECRETARIO_SEDE')"/>
+			
+			<security:intercept-url pattern="/PastorCadastro/**" access="hasAnyRole('ROLE_SECRETARIO_SEDE')"/>
+			<security:intercept-url pattern="/ListaPastor/**" access="hasAnyRole('ROLE_SECRETARIO_SEDE','ROLE_TESOUREIRO_SEDE')"/>
+			<security:intercept-url pattern="/AlteraPastor/**" access="hasAnyRole('ROLE_SECRETARIO_SEDE')"/>
+			<security:intercept-url pattern="/mostraPastor/**" access="hasAnyRole('ROLE_SECRETARIO_SEDE')"/>
+			<security:intercept-url pattern="/salvaPastor/**" access="hasAnyRole('ROLE_SECRETARIO_SEDE')"/>
+			
+			<security:intercept-url pattern="/MembroCadastro/**" access="hasAnyRole('ROLE_SECRETARIO_SEDE','ROLE_SECRETARIO_CONGREGACAO')"/>
+			<security:intercept-url pattern="/ListaTodosMembros/**" access="hasAnyRole('ROLE_SECRETARIO_SEDE','ROLE_TESOUREIRO_SEDE')"/>
+			<security:intercept-url pattern="/ListaMembroSede/**" access="hasAnyRole('ROLE_SECRETARIO_SEDE','ROLE_TESOUREIRO_SEDE')"/>
+			<security:intercept-url pattern="/ListaMembroCongregacao/**" access="hasAnyRole('ROLE_SECRETARIO_SEDE','ROLE_TESOUREIRO_SEDE',
+																		'ROLE_TESOUREIRO_CONGREGACAO','ROLE_SECRETARIO_CONGREGACAO')"/>
+			<security:intercept-url pattern="/BuscaMembroCongregacao/**" access="hasAnyRole('ROLE_SECRETARIO_SEDE','ROLE_TESOUREIRO_SEDE',
+																		'ROLE_TESOUREIRO_CONGREGACAO','ROLE_SECRETARIO_CONGREGACAO')"/>
+			<security:intercept-url pattern="/AlteraMembro/**" access="hasAnyRole('ROLE_SECRETARIO_SEDE','ROLE_SECRETARIO_CONGREGACAO')"/>
+			<security:intercept-url pattern="/mostraMembro/**" access="hasAnyRole('ROLE_SECRETARIO_SEDE','ROLE_SECRETARIO_CONGREGACAO')"/>
+			<security:intercept-url pattern="/salvaMembro/**" access="hasAnyRole('ROLE_SECRETARIO_SEDE','ROLE_SECRETARIO_CONGREGACAO')"/>
+			
+			<security:intercept-url pattern="/ListaObreirosSede/**" access="hasAnyRole('ROLE_SECRETARIO_SEDE','ROLE_TESOUREIRO_SEDE')"/>
+			<security:intercept-url pattern="/ListaObreiros/**" access="hasAnyRole('ROLE_SECRETARIO_SEDE','ROLE_TESOUREIRO_SEDE',
+																		'ROLE_TESOUREIRO_CONGREGACAO','ROLE_SECRETARIO_CONGREGACAO')"/>
+			<security:intercept-url pattern="/BuscaObreirosCongregacao/**" access="hasAnyRole('ROLE_SECRETARIO_SEDE','ROLE_TESOUREIRO_SEDE',
+																		'ROLE_TESOUREIRO_CONGREGACAO','ROLE_SECRETARIO_CONGREGACAO')"/>
+			
+			
+			<security:intercept-url pattern="/relatorioDizimo/**" access="hasAnyRole('ROLE_TESOUREIRO_SEDE','ROLE_TESOUREIRO_CONGREGACAO')"/>
+			
+	</security:http>
+	
+	<security:global-method-security secured-annotations="enabled"/>
+	
+	<!--  
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="username" value="root"/>
+		<property name="password" value="12123636"/>
+		<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+		<property name="url" value="jdbc:mysql://localhost:3306/igreja"/>
+	</bean>
+	-->
+	<security:authentication-manager>
+		<security:authentication-provider>
+			<security:password-encoder hash="md5"/>
+			<security:jdbc-user-service data-source-ref="dataSource"
+			users-by-username-query="select login,senha, 'true' as enable from usuario where login=?"
+			authorities-by-username-query="SELECT distinct usuario.login, permissao_usuario.role from usuario,permissao_usuario where usuario.login=? 
+											and permissao_usuario.usuario_idusuario = usuario.idusuario"/>
+		</security:authentication-provider>
+	</security:authentication-manager>
+	
+	<bean id="securityContextPersistenceFilter"
+  	class="org.springframework.security.web.context.SecurityContextPersistenceFilter"/>
+
+</beans>
