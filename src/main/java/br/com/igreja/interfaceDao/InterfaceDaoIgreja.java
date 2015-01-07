@@ -16,4 +16,6 @@ public interface InterfaceDaoIgreja extends InterfaceDaoBase<Igreja> {
 	List<Igreja> getTipo(TipoIgreja tipoIgreja);
 	
 	String getIgrejaNome(int idigreja);
+	
+	Igreja getIgreja(int idigreja);
 }

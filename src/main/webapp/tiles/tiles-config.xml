@@ -60,5 +60,12 @@
     <definition name="dizimo/RelatorioDizimo"  extends="main" >
     	<put-attribute name="conteudo" value="/views/dizimo/RelatorioDizimo.jsp"/>
     </definition>
+    
+    <definition name="usuario/UsuarioCadastro"  extends="main" >
+    	<put-attribute name="conteudo" value="/views/usuario/UsuarioCadastro.jsp"/>
+    </definition>
+    <definition name="usuario/ListaTodosUsuarios"  extends="main" >
+    	<put-attribute name="conteudo" value="/views/usuario/ListaUsuarios.jsp"/>
+    </definition>
 
 </tiles-definitions>

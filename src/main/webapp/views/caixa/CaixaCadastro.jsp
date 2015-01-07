@@ -124,6 +124,8 @@ $(document).ready(function() {
 			</sf:form>
 		</div>
 	</div>
+	
+	<!-- Tabela para cadastro de Dizimo -->
 	<div id="tabs-2">
 		<div align="center" class="ui-widget">
 			<sf:form modelAttribute="dizimo" id="formDizimo">
@@ -157,6 +159,8 @@ $(document).ready(function() {
 			</sf:form>
 		</div>
 	</div>
+	
+	<!-- Tabela que lista as movimentações do mês -->
 	<div id="tabs-3">
 		<div align="center">
 			<div align="center" class="ui-tabela">
@@ -228,9 +232,10 @@ $(document).ready(function() {
 									<option value="20">20</option>
 									<option value="30">30</option>
 									<option value="40">40</option>
-							</select> &nbsp;| Total de Entrada: R$ <span style="color: blue;">${totalEntradaMes}</span>
-								&nbsp;| Total de Saída: R$ <span style="color: red;">${totalSaidaMes}</span>
-								&nbsp;| Saldo Atual: R$ <span style="color: green;">${saldoMes}</span>
+							</select> &nbsp;| Entrada: <span style="color: blue;">${totalEntradaMes}</span>
+								&nbsp;| Saída: <span style="color: red;">${totalSaidaMes}</span>
+								&nbsp;| Saldo Atual: <span style="color: green;">${saldoMes}</span>
+								&nbsp;| Saldo Anterior: <span style="color: green;">${saldoAnterior}</span>
 							</td>
 						</tr>
 					</tfoot>

@@ -2,6 +2,7 @@ package br.com.igreja;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
@@ -45,10 +46,12 @@ public class CaixaControler {
 	
 	private BigDecimal saldoMesAtual;
 	
+	private DecimalFormat formatar = new DecimalFormat("R$ #,##0.00");
+	
 	@RequestMapping("CaixaCadastro")
 	public String registro(Map<String, Object> model, Model tipo, Model mesAtual, Model anoAtual, 
 						Model totalEntradaMes, Model totalSaidaMes, Model saldoMes, Model igrejas, 
-						Map<String, Object> dizimo, Model membros) {
+						Map<String, Object> dizimo, Model membros, Model saldoAnterior) {
 		
 		if(model.get("caixa") == null) {
 			model.put("caixa", new Caixa());
@@ -61,29 +64,27 @@ public class CaixaControler {
 		
 		tipo.addAttribute("tipo", TipoCaixa.values());
 		mesAtual.addAttribute("caixas", caixaDao.getIgrejaIdMes(igrejasId.getIdigreja()));
-		anoAtual.addAttribute("caixaAno", caixaDao.getIgrejaIdAno(igrejasId.getIdigreja()));
+		//anoAtual.addAttribute("caixaAno", caixaDao.getIgrejaIdAno(igrejasId.getIdigreja()));
 		
 		BigDecimal totalEntradaMesAtual = caixaDao.TotalEntradaSaidaMesIgrejaId(TipoCaixa.ENTRADA, igrejasId.getIdigreja());
 		BigDecimal totalSaidaMesAtual = caixaDao.TotalEntradaSaidaMesIgrejaId(TipoCaixa.SAIDA, igrejasId.getIdigreja());
 		
-		BigDecimal saldoEntradaTrintaDias = caixaDao.saldoAtual(TipoCaixa.ENTRADA, igrejasId.getIdigreja());
-		BigDecimal saldoSaidaTrintaDias = caixaDao.saldoAtual(TipoCaixa.SAIDA, igrejasId.getIdigreja());
+		//BigDecimal saldoEntradaTrintaDias = caixaDao.saldoAtual(TipoCaixa.ENTRADA, igrejasId.getIdigreja());
+		//BigDecimal saldoSaidaTrintaDias = caixaDao.saldoAtual(TipoCaixa.SAIDA, igrejasId.getIdigreja());
 		
-		if (saldoSaidaTrintaDias != null) {
-			
-			if (saldoEntradaTrintaDias != null) {
-				totalEntradaMes.addAttribute("totalEntradaMes", totalEntradaMesAtual);
-				saldoMesAtual =  saldoEntradaTrintaDias.subtract(saldoSaidaTrintaDias);
-			} else {
-				saldoMesAtual =  saldoSaidaTrintaDias;
-			}
-		} else if (saldoEntradaTrintaDias != null) {
-			totalEntradaMes.addAttribute("totalEntradaMes", totalEntradaMesAtual);
-			saldoMesAtual =  saldoEntradaTrintaDias;
-		}
+		BigDecimal entradaMesAnterior = caixaDao.entradaMesAnterior(TipoCaixa.ENTRADA, igrejasId.getIdigreja());
+		BigDecimal saidaMesAnterior = caixaDao.saidaMesAnterior(TipoCaixa.SAIDA, igrejasId.getIdigreja());
 		
-		saldoMes.addAttribute("saldoMes", saldoMesAtual);
-		totalSaidaMes.addAttribute("totalSaidaMes", totalSaidaMesAtual);
+		BigDecimal saldo = entradaMesAnterior.subtract(saidaMesAnterior);
+		
+		saldoAnterior.addAttribute("saldoAnterior", formatar.format(saldo));
+		
+		
+		saldoMesAtual = saldo.add(totalEntradaMesAtual.subtract(totalSaidaMesAtual));
+		
+		saldoMes.addAttribute("saldoMes", formatar.format(saldoMesAtual));
+		totalEntradaMes.addAttribute("totalEntradaMes", formatar.format(totalEntradaMesAtual));
+		totalSaidaMes.addAttribute("totalSaidaMes", formatar.format(totalSaidaMesAtual));
 		igrejas.addAttribute("igrejas", igrejaDao.getNome(igrejasId.getNome()));
 		membros.addAttribute("membros", membroDao.getIgreja(igrejasId.getIdigreja()));
 		
@@ -116,7 +117,7 @@ public class CaixaControler {
 	@RequestMapping("CaixaCadastroCongregacao")
 	public String registroCongregacao(Map<String, Object> model, Model tipo, Model mesAtual, Model anoAtual, 
 			Model totalEntradaMes, Model totalSaidaMes, Model saldoMes, Model igrejas, 
-			Map<String, Object> dizimo, Model membros) {
+			Map<String, Object> dizimo, Model membros, Model saldoAnterior) {
 		
 		if(model.get("caixa") == null) {
 			model.put("caixa", new Caixa());
@@ -138,31 +139,29 @@ public class CaixaControler {
 			
 			
 			mesAtual.addAttribute("caixas", caixaDao.getIgrejaIdMes(igrejasId.getIdigreja()));
-			anoAtual.addAttribute("caixaAno", caixaDao.getIgrejaIdAno(igrejasId.getIdigreja()));
+			//anoAtual.addAttribute("caixaAno", caixaDao.getIgrejaIdAno(igrejasId.getIdigreja()));
 			
 			BigDecimal totalEntradaMesAtual = caixaDao.TotalEntradaSaidaMesIgrejaId(TipoCaixa.ENTRADA, igrejasId.getIdigreja());
 			BigDecimal totalSaidaMesAtual = caixaDao.TotalEntradaSaidaMesIgrejaId(TipoCaixa.SAIDA, igrejasId.getIdigreja());
 			
-			totalSaidaMes.addAttribute("totalSaidaMes", totalSaidaMesAtual);
-			
-			BigDecimal saldoEntradaTrintaDias = caixaDao.saldoAtual(TipoCaixa.ENTRADA, igrejasId.getIdigreja());
-			BigDecimal saldoSaidaTrintaDias = caixaDao.saldoAtual(TipoCaixa.SAIDA, igrejasId.getIdigreja());
+			//BigDecimal saldoEntradaTrintaDias = caixaDao.saldoAtual(TipoCaixa.ENTRADA, igrejasId.getIdigreja());
+			//BigDecimal saldoSaidaTrintaDias = caixaDao.saldoAtual(TipoCaixa.SAIDA, igrejasId.getIdigreja());
 			
 			tipo.addAttribute("tipo", TipoCaixa.values());
 			
-			if (saldoSaidaTrintaDias != null) {
-				
-				if (saldoEntradaTrintaDias != null) {
-					totalEntradaMes.addAttribute("totalEntradaMes", totalEntradaMesAtual);
-					saldoMesAtual =  saldoEntradaTrintaDias.subtract(saldoSaidaTrintaDias);
-				} else {
-					saldoMesAtual =  saldoSaidaTrintaDias;
-				}
-			} else if (saldoEntradaTrintaDias != null) {
-				totalEntradaMes.addAttribute("totalEntradaMes", totalEntradaMesAtual);
-				saldoMesAtual =  saldoEntradaTrintaDias;
-			}
-			saldoMes.addAttribute("saldoMes", saldoMesAtual);
+			BigDecimal entradaMesAnterior = caixaDao.entradaMesAnterior(TipoCaixa.ENTRADA, igrejasId.getIdigreja());
+			BigDecimal saidaMesAnterior = caixaDao.saidaMesAnterior(TipoCaixa.SAIDA, igrejasId.getIdigreja());
+			
+			BigDecimal saldo = entradaMesAnterior.subtract(saidaMesAnterior);
+			
+			saldoAnterior.addAttribute("saldoAnterior", formatar.format(saldo));
+			
+			saldoMesAtual = saldo.add(totalEntradaMesAtual.subtract(totalSaidaMesAtual));
+			
+			totalEntradaMes.addAttribute("totalEntradaMes", formatar.format(totalEntradaMesAtual));
+			totalSaidaMes.addAttribute("totalSaidaMes", formatar.format(totalSaidaMesAtual));
+			
+			saldoMes.addAttribute("saldoMes", formatar.format(saldoMesAtual));
 			return "caixa/CaixaCadastro";
 		}else {
 			tipo.addAttribute("igreja_idigreja", "igreja.idigreja");
@@ -176,7 +175,7 @@ public class CaixaControler {
 	@RequestMapping("buscaCongregacao")
 	public String resgistroDeCongregacaoSede(Map<String, Object> model, Model tipo, Model mesAtual, Model anoAtual, 
 			Model totalEntradaMes, Model totalSaidaMes, Model saldoMes, Model igrejas, 
-			Map<String, Object> dizimo, Model membros, Caixa caixa) {
+			Map<String, Object> dizimo, Model membros, Caixa caixa, Model saldoAnterior) {
 		
 		if(model.get("caixa") == null) {
 			model.put("caixa", new Caixa());
@@ -195,31 +194,30 @@ public class CaixaControler {
 		
 		
 		mesAtual.addAttribute("caixas", caixaDao.getIgrejaIdMes(igrejasId.getIdigreja()));
-		anoAtual.addAttribute("caixaAno", caixaDao.getIgrejaIdAno(igrejasId.getIdigreja()));
+		//anoAtual.addAttribute("caixaAno", caixaDao.getIgrejaIdAno(igrejasId.getIdigreja()));
 		
 		BigDecimal totalEntradaMesAtual = caixaDao.TotalEntradaSaidaMesIgrejaId(TipoCaixa.ENTRADA, igrejasId.getIdigreja());
 		BigDecimal totalSaidaMesAtual = caixaDao.TotalEntradaSaidaMesIgrejaId(TipoCaixa.SAIDA, igrejasId.getIdigreja());
 		
-		BigDecimal saldoEntradaTrintaDias = caixaDao.saldoAtual(TipoCaixa.ENTRADA, igrejasId.getIdigreja());
-		BigDecimal saldoSaidaTrintaDias = caixaDao.saldoAtual(TipoCaixa.SAIDA, igrejasId.getIdigreja());
-		
-		totalSaidaMes.addAttribute("totalSaidaMes", totalSaidaMesAtual);
+		//BigDecimal saldoEntradaTrintaDias = caixaDao.saldoAtual(TipoCaixa.ENTRADA, igrejasId.getIdigreja());
+		//BigDecimal saldoSaidaTrintaDias = caixaDao.saldoAtual(TipoCaixa.SAIDA, igrejasId.getIdigreja());
 		
 		tipo.addAttribute("tipo", TipoCaixa.values());
 		
-		if (saldoSaidaTrintaDias != null) {
-			
-			if (saldoEntradaTrintaDias != null) {
-				totalEntradaMes.addAttribute("totalEntradaMes", totalEntradaMesAtual);
-				saldoMesAtual =  saldoEntradaTrintaDias.subtract(saldoSaidaTrintaDias);
-			} else {
-				saldoMesAtual =  saldoSaidaTrintaDias;
-			}
-		} else if (saldoEntradaTrintaDias != null) {
-			totalEntradaMes.addAttribute("totalEntradaMes", totalEntradaMesAtual);
-			saldoMesAtual =  saldoEntradaTrintaDias;
-		}			
-		saldoMes.addAttribute("saldoMes", saldoMesAtual);
+
+		BigDecimal entradaMesAnterior = caixaDao.entradaMesAnterior(TipoCaixa.ENTRADA, igrejasId.getIdigreja());
+		BigDecimal saidaMesAnterior = caixaDao.saidaMesAnterior(TipoCaixa.SAIDA, igrejasId.getIdigreja());
+		
+		BigDecimal saldo = entradaMesAnterior.subtract(saidaMesAnterior);
+		
+		saldoAnterior.addAttribute("saldoAnterior", formatar.format(saldo));
+		
+		saldoMesAtual = saldo.add(totalEntradaMesAtual.subtract(totalSaidaMesAtual));
+		
+		totalEntradaMes.addAttribute("totalEntradaMes", formatar.format(totalEntradaMesAtual));
+		totalSaidaMes.addAttribute("totalSaidaMes", formatar.format(totalSaidaMesAtual));
+		
+		saldoMes.addAttribute("saldoMes", formatar.format(saldoMesAtual));
 		return "caixa/CaixaCadastro";
 	}
 	

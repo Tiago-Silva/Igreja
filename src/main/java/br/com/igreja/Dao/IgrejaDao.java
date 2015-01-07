@@ -68,4 +68,10 @@ public class IgrejaDao extends GenericJPADao<Igreja> implements InterfaceDaoIgre
 		return nome;
 	}
 
+	@Override
+	public Igreja getIgreja(int idigreja) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

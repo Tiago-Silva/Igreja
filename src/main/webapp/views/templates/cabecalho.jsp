@@ -21,7 +21,7 @@
 					<hr style="height: 1px;margin-top: 0px; margin-bottom: 0px;"/>
 					<li><a href="<c:url value="MembroCadastro"/>">Membros</a></li>
 					<hr style="height: 1px;margin-top: 0px; margin-bottom: 0px;"/>
-					<li><a href="DizimoCadastro">Dizimo</a></li>
+					<li><a href="<c:url value="UsuarioCadastro"/>">Usuário</a></li>
 				</ul></li>
 			</sec:authorize>
 			<sec:authorize access="hasAnyRole('ROLE_SECRETARIO_CONGREGACAO')">
@@ -47,6 +47,8 @@
 					<li><a href="<c:url value="ListaMembroCongregacao"/>">Congregação</a></li>
 					<hr style="height: 1px;margin-top: 0px; margin-bottom: 0px;"/>
 					<li><a href="ListaTodosMembros">TODOS</a></li>
+					<hr style="height: 1px;margin-top: 0px; margin-bottom: 0px;"/>
+					<li><a href="ListaTodosUsuarios">Usuários</a></li>
 					<hr style="height: 1px;margin-top: 0px; margin-bottom: 0px;"/>
 					<li><a href="<c:url value="pesquisaCartaoMembro"/>">Cartão de Membro</a></li>
 					<hr style="height: 1px;margin-top: 0px; margin-bottom: 0px;"/>

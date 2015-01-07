@@ -1,7 +1,10 @@
 package br.com.igreja.entidades;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
+import br.com.igreja.enuns.PermissaoUsuarioEnum;
 
 
 /**
@@ -18,7 +21,9 @@ public class PermissaoUsuario implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 
-	private String role;
+	@Column(name = "role")
+	@Enumerated(EnumType.STRING)
+	private PermissaoUsuarioEnum role;
 
 	//bi-directional many-to-one association to Usuario
 	@ManyToOne
@@ -36,19 +41,19 @@ public class PermissaoUsuario implements Serializable {
 		this.id = id;
 	}
 
-	public String getRole() {
-		return this.role;
-	}
-
-	public void setRole(String role) {
-		this.role = role;
-	}
-
 	public Usuario getUsuario1() {
 		return this.usuario1;
 	}
 
 	public void setUsuario1(Usuario usuario1) {
 		this.usuario1 = usuario1;
+	}
+	
+	public PermissaoUsuarioEnum getRole() {
+		return role;
+	}
+
+	public void setRole(PermissaoUsuarioEnum role) {
+		this.role = role;
 	}
 }

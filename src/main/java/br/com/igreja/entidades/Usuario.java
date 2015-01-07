@@ -1,19 +1,23 @@
 package br.com.igreja.entidades;
 
 import java.io.Serializable;
-
-import javax.persistence.*;
-
-import org.springframework.context.annotation.Scope;
-
 import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 
 /**
  * The persistent class for the usuario database table.
  * 
  */
-@Scope("session")
 @Entity
 @Table(name="usuario")
 @NamedQuery(name="Usuario.findAll", query="SELECT u FROM Usuario u")

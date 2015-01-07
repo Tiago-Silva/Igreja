@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -153,17 +154,22 @@ public class DizimoControler {
 	
 	@RequestMapping(value = "salvaDizimoJson", method = RequestMethod.POST)
 	@ResponseBody
-	public Caixa salvaDizimoJson(Dizimo dizimo) {
+	public Caixa salvaDizimoJson(Dizimo dizimo) throws ParseException {
 		
 		DateFormat dateFormat = new SimpleDateFormat("MM");
-		Date date = new Date();
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		Date date = sdf.parse(dizimo.getData());
+		
 		String mes = dateFormat.format(date);
+		
 		DateFormat format = new SimpleDateFormat("yyyy");
 		String ano = format.format(date);
+		
 		dizimo.setMes(mes);
 		dizimo.setAno(ano);
-		DateFormat dateMA = new SimpleDateFormat("dd/MM/yyyy");
-		String dataCaixa = dateMA.format(date);
+		
+		String dataCaixa = sdf.format(date);
 		
 		Membro membros = membroDao.getMembro(dizimo.getMembroBean().getIdmembro());
 		

@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -153,7 +154,13 @@ public class CaixaDao extends GenericJPADao<Caixa> implements InterfaceDaoCaixa 
 		
 		BigDecimal valorTotalEntradaSaidaMes = query.getSingleResult();
 		
-		return valorTotalEntradaSaidaMes;
+		BigDecimal retorno = new BigDecimal("0.0");
+		
+		if(valorTotalEntradaSaidaMes == null) {
+			return retorno;
+		} else {
+			return retorno = retorno.add(valorTotalEntradaSaidaMes);
+		}
 	}
 	
 	@Transactional(propagation=Propagation.REQUIRED, isolation=Isolation.SERIALIZABLE, readOnly=true)
@@ -179,6 +186,69 @@ public class CaixaDao extends GenericJPADao<Caixa> implements InterfaceDaoCaixa 
 		
 		BigDecimal saldoTotalEntradaSaidaMes = query.getSingleResult();
 		return saldoTotalEntradaSaidaMes;
+	}
+
+	@Override
+	public BigDecimal entradaMesAnterior(TipoCaixa tipoCaixa, int igrejaIdigreja) {
+		
+		GregorianCalendar gc = new GregorianCalendar();
+		
+		gc.add(gc.MONTH, -1);
+		
+		Date data = gc.getTime();
+		
+		DateFormat dateFormat = new SimpleDateFormat("MM");
+		String mes = dateFormat.format(data);
+		
+		String jpql = "Select sum(a.valor) from Caixa a where a.tipo = :tipo "
+				+ " and a.mes = :mes and a.igreja.idigreja = :igrejaIdigreja";
+		TypedQuery<BigDecimal> query = em.createQuery(jpql, BigDecimal.class);
+		
+		query.setParameter("tipo", tipoCaixa);
+		query.setParameter("mes", mes);
+		query.setParameter("igrejaIdigreja", igrejaIdigreja);
+		
+		BigDecimal valorTotalEntradaSaidaMes = query.getSingleResult();
+		
+		BigDecimal retorno = new BigDecimal("0.0");
+		
+		if(valorTotalEntradaSaidaMes == null) {
+			return retorno;
+		} else {
+			return retorno = retorno.add(valorTotalEntradaSaidaMes);
+		}
+	}
+
+	@Override
+	public BigDecimal saidaMesAnterior(TipoCaixa tipoCaixa, int igrejaIdigreja) {
+		
+		GregorianCalendar gc = new GregorianCalendar();
+		
+		gc.add(gc.MONTH, -1);
+		
+		Date data = gc.getTime();
+		
+		DateFormat dateFormat = new SimpleDateFormat("MM");
+		String mes = dateFormat.format(data);
+		
+		String jpql = "Select sum(a.valor) from Caixa a where a.tipo = :tipo "
+				+ " and a.mes = :mes and a.igreja.idigreja = :igrejaIdigreja";
+		TypedQuery<BigDecimal> query = em.createQuery(jpql, BigDecimal.class);
+		
+		query.setParameter("tipo", tipoCaixa);
+		query.setParameter("mes", mes);
+		query.setParameter("igrejaIdigreja", igrejaIdigreja);
+		
+		BigDecimal valorTotalSaidaMes = query.getSingleResult();
+		
+		BigDecimal retorno = new BigDecimal("0.0");
+		
+		if(valorTotalSaidaMes == null) {
+			return retorno;
+		} else {
+			return retorno = retorno.add(valorTotalSaidaMes);
+		}
+		
 	}
 
 }

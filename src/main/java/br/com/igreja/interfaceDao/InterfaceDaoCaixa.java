@@ -28,4 +28,8 @@ public interface InterfaceDaoCaixa extends InterfaceDaoBase<Caixa> {
 	public BigDecimal TotalEntradaSaidaMesIgrejaId(TipoCaixa tipoCaixa, int igrejaIdigreja);
 	
 	public BigDecimal saldoAtual(TipoCaixa tipoCaixa, int igrejaIdigreja);
+	
+	public BigDecimal entradaMesAnterior(TipoCaixa tipoCaixa, int igrejaIdigreja);
+	
+	public BigDecimal saidaMesAnterior(TipoCaixa tipoCaixa, int igrejaIdigreja);
 }

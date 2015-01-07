@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -69,6 +68,7 @@ public class MembroControler {
 		} else {
 			modelo.addAttribute("igrejas", igrejaDao.getLista(Igreja.class));
 		}
+		
 		
 		sexo.addAttribute("sexo", Sexo.values());
 		estado.addAttribute("estados", Estados.values());
