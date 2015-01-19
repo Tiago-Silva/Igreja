@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page session="false"%>
@@ -12,7 +14,7 @@
 
 	<c:if test="${param.error == 1}">
 		<div class="erro" align="center">
-			<h3 class="erro">Você não possui Autorização para acessar o conteúdo solicitado!</h3>
+			<h3 class="erro">Vocï¿½ nï¿½o possui Autorizaï¿½ï¿½o para acessar o conteï¿½do solicitado!</h3>
 		</div>
 	</c:if>
 	
@@ -23,16 +25,16 @@
 		
 		<c:if test="${param.error != null}">
 			<div class="erro">
-			Login e/ou Senha inválido.
+			Login e/ou Senha invï¿½lido.
 			<c:if test="${SPRING_SECURITY_LAST_EXCEPTION != null}">
-			Reason: <c:out value="#{sessionScope.SPRING_SECURITY_LAST_EXCEPTION.message}"/>
+			Motivo: <c:out value="#{sessionScope.SPRING_SECURITY_LAST_EXCEPTION.message}"/>
 			</c:if>
 			</div>
 			</c:if>
 			
 			<c:if test="${param.logout == 1}">
 			<div class="alert alert-success">
-			Você foi desconectado.
+			Vocï¿½ foi desconectado.
 			</div>
 			</c:if>
 		

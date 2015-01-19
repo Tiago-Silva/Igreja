@@ -70,8 +70,11 @@ public class IgrejaDao extends GenericJPADao<Igreja> implements InterfaceDaoIgre
 
 	@Override
 	public Igreja getIgreja(int idigreja) {
-		// TODO Auto-generated method stub
-		return null;
+		String jpql = "select a from Igreja a where a.idigreja = :idigreja";
+		TypedQuery<Igreja> query = em.createQuery(jpql, Igreja.class);
+		query.setParameter("idigreja", idigreja);
+		Igreja igreja = query.getSingleResult();
+		return igreja;
 	}
 
 }

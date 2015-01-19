@@ -54,5 +54,10 @@
     <beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
         <beans:property name="maxUploadSize" value="50000000"/>
     </beans:bean>
+    
+    <!-- Usando mensagens personalizadas - O arquivo myMessages.properties foi adicionado na pasta WEB_INF -->
+    <beans:bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+    	<beans:property name="basename" value="/WEB-INF/myMessages" />
+    </beans:bean>
 	
 </beans:beans>
