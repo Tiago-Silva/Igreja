@@ -11,11 +11,18 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import org.eclipse.persistence.oxm.annotations.XmlInverseReference;
 
 /**
  * The persistent class for the dizimo database table.
  * 
  */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 @Entity
 @Table(name = "dizimo")
 @NamedQuery(name = "Dizimo.findAll", query = "SELECT d FROM Dizimo d")
@@ -39,6 +46,7 @@ public class Dizimo implements Serializable {
 	// bi-directional many-to-one association to Membro
 	@ManyToOne
 	@JoinColumn(name = "membro_idmembro")
+	@XmlInverseReference(mappedBy = "dizimos")
 	private Membro membroBean;
 
 	public Dizimo() {

@@ -13,6 +13,11 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import org.eclipse.persistence.oxm.annotations.XmlInverseReference;
 
 import br.com.igreja.enuns.TipoCaixa;
 
@@ -20,6 +25,8 @@ import br.com.igreja.enuns.TipoCaixa;
  * The persistent class for the caixa database table.
  * 
  */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 @Entity
 @Table(name = "caixa")
 @NamedQuery(name = "Caixa.findAll", query = "SELECT c FROM Caixa c")
@@ -58,6 +65,7 @@ public class Caixa implements Serializable {
 
 	// bi-directional many-to-one association to Igreja
 	@ManyToOne
+	@XmlInverseReference(mappedBy = "caixas")
 	private Igreja igreja;
 
 	public Caixa() {

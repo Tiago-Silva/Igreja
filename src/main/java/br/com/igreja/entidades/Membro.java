@@ -18,7 +18,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
+import org.eclipse.persistence.oxm.annotations.XmlInverseReference;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import br.com.igreja.enuns.BatismoEspirito;
@@ -31,12 +36,14 @@ import br.com.igreja.enuns.Sexo;
  * The persistent class for the membro database table.
  * 
  */
+@XmlRootElement(name = "membro")
+@XmlAccessorType(XmlAccessType.FIELD)
 @Entity
 @Table(name = "membro")
 @NamedQuery(name = "Membro.findAll", query = "SELECT m FROM Membro m")
 public class Membro implements Serializable {
 	private static final long serialVersionUID = 1L;
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int idmembro;
@@ -96,17 +103,20 @@ public class Membro implements Serializable {
 	private String estado_natural;
 
 	private String civil;
-
+	
+	@XmlTransient
 	@Lob
 	private byte[] foto;
 
 	// bi-directional many-to-one association to Dizimo
+	@XmlTransient
 	@OneToMany(mappedBy = "membroBean")
 	private List<Dizimo> dizimos;
 
 	// bi-directional many-to-one association to Igreja
 	@ManyToOne
 	@JoinColumn(name = "igreja_idigreja")
+	@XmlInverseReference(mappedBy = "membros")
 	private Igreja igrejaBean;
 
 	public Membro() {

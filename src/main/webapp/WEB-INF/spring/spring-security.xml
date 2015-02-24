@@ -34,14 +34,16 @@
 			
 			<security:intercept-url pattern="/MembroCadastro/**" access="hasAnyRole('ROLE_SECRETARIO_SEDE','ROLE_SECRETARIO_CONGREGACAO')"/>
 			<security:intercept-url pattern="/ListaTodosMembros/**" access="hasAnyRole('ROLE_SECRETARIO_SEDE','ROLE_TESOUREIRO_SEDE')"/>
-			<security:intercept-url pattern="/ListaMembroSede/**" access="hasAnyRole('ROLE_SECRETARIO_SEDE','ROLE_TESOUREIRO_SEDE')"/>
-			<security:intercept-url pattern="/ListaMembroCongregacao/**" access="hasAnyRole('ROLE_SECRETARIO_SEDE','ROLE_TESOUREIRO_SEDE',
+			<security:intercept-url pattern="**/ListaMembroSede/**" access="hasAnyRole('ROLE_SECRETARIO_SEDE','ROLE_TESOUREIRO_SEDE')"/>
+			<security:intercept-url pattern="**/ListaMembroCongregacao/**" access="hasAnyRole('ROLE_SECRETARIO_SEDE','ROLE_TESOUREIRO_SEDE',
 																		'ROLE_TESOUREIRO_CONGREGACAO','ROLE_SECRETARIO_CONGREGACAO')"/>
 			<security:intercept-url pattern="/BuscaMembroCongregacao/**" access="hasAnyRole('ROLE_SECRETARIO_SEDE','ROLE_TESOUREIRO_SEDE',
 																		'ROLE_TESOUREIRO_CONGREGACAO','ROLE_SECRETARIO_CONGREGACAO')"/>
 			<security:intercept-url pattern="/AlteraMembro/**" access="hasAnyRole('ROLE_SECRETARIO_SEDE','ROLE_SECRETARIO_CONGREGACAO')"/>
 			<security:intercept-url pattern="/mostraMembro/**" access="hasAnyRole('ROLE_SECRETARIO_SEDE','ROLE_SECRETARIO_CONGREGACAO')"/>
 			<security:intercept-url pattern="/salvaMembro/**" access="hasAnyRole('ROLE_SECRETARIO_SEDE','ROLE_SECRETARIO_CONGREGACAO')"/>
+			<security:intercept-url pattern="**/ListaMembrosIgrejaSedeJson/**" access="hasAnyRole('ROLE_SECRETARIO_SEDE','ROLE_TESOUREIRO_SEDE',
+																		'ROLE_TESOUREIRO_CONGREGACAO','ROLE_SECRETARIO_CONGREGACAO')"/>
 			
 			<security:intercept-url pattern="/ListaObreirosSede/**" access="hasAnyRole('ROLE_SECRETARIO_SEDE','ROLE_TESOUREIRO_SEDE')"/>
 			<security:intercept-url pattern="/ListaObreiros/**" access="hasAnyRole('ROLE_SECRETARIO_SEDE','ROLE_TESOUREIRO_SEDE',

@@ -18,7 +18,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 
+import org.eclipse.persistence.oxm.annotations.XmlInverseReference;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import br.com.igreja.enuns.Estados;
@@ -28,6 +32,8 @@ import br.com.igreja.enuns.TipoIgreja;
  * The persistent class for the igreja database table.
  * 
  */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 @Entity
 @Table(name = "igreja")
 @NamedQuery(name = "Igreja.findAll", query = "SELECT i FROM Igreja i")
@@ -82,6 +88,7 @@ public class Igreja implements Serializable {
 	// bi-directional many-to-one association to Pastor
 	@ManyToOne
 	@JoinColumn(name = "pastor_idpastor")
+	@XmlInverseReference(mappedBy = "igrejas")
 	private Pastor pastorBean;
 
 	public Igreja() {

@@ -1,6 +1,5 @@
 package br.com.igreja.aspecto;
 
-import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -11,6 +10,7 @@ import org.springframework.stereotype.Component;
 import br.com.igreja.entidades.Igreja;
 import br.com.igreja.interfaceDao.InterfaceDaoIgreja;
 import br.com.igreja.interfaceDao.InterfaceDaoUsuario;
+
 
 @Component
 @Aspect

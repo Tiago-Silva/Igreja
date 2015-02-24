@@ -37,13 +37,12 @@
 			  
 	</bean>
 	
-
     <!-- Configuração do EntityManagerFactory -->
     <bean id="entityManagerFactory"
         class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="dataSource" />
         <property name="packagesToScan" value="br.com.igreja.entidades" />
-        <property name="persistenceProviderClass" value="org.hibernate.ejb.HibernatePersistence" />
+        <property name="persistenceProviderClass" value="org.hibernate.jpa.HibernatePersistenceProvider" />
         <property name="jpaProperties">
                 <props>
                         <prop key="hibernate.hbm2ddl.auto">update</prop>

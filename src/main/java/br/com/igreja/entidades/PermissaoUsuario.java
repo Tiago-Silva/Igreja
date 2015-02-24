@@ -3,6 +3,11 @@ package br.com.igreja.entidades;
 import java.io.Serializable;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import org.eclipse.persistence.oxm.annotations.XmlInverseReference;
 
 import br.com.igreja.enuns.PermissaoUsuarioEnum;
 
@@ -11,6 +16,8 @@ import br.com.igreja.enuns.PermissaoUsuarioEnum;
  * The persistent class for the permissao_usuario database table.
  * 
  */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 @Entity
 @Table(name="permissao_usuario")
 @NamedQuery(name="PermissaoUsuario.findAll", query="SELECT p FROM PermissaoUsuario p")
@@ -28,6 +35,7 @@ public class PermissaoUsuario implements Serializable {
 	//bi-directional many-to-one association to Usuario
 	@ManyToOne
 	@JoinColumn(name="usuario_idusuario")
+	@XmlInverseReference(mappedBy = "permissaoUsuarios1")
 	private Usuario usuario1;
 
 	public PermissaoUsuario() {

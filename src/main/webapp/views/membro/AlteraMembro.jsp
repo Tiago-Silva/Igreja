@@ -1,10 +1,12 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@taglib prefix="sf" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <div align="center" class="ui-widget">
 	<sf:form modelAttribute="membro" action="AlteraMembro" enctype="multipart/form-data">
 		<fieldset>
-			<legend>Edição de Membros</legend>
+			<legend>EdiÃ§Ã£o de Membros</legend>
 			<table>
 				<tr>
 					<td><input type="hidden" id="idmembro" name="idmembro" value="${membro.idmembro}"/></td>
@@ -32,7 +34,7 @@
 					</td>
 					
 					<td>
-						<label for="orgaorg">Orgão RG: </label>
+						<label for="orgaorg">Orgï¿½o RG: </label>
 						<sf:select path="orgaorg">
 							<option value="${membro.orgaorg}">${membro.orgaorg}</option>
 							<c:forEach items="${orgaoRg}" var="orgaoRg">
@@ -113,11 +115,11 @@
 				</tr>
 				
 				<tr>
-					<td colspan="10" style="background: aqua;">Endereço Atual</td>
+					<td colspan="10" style="background: aqua;">Endereï¿½o Atual</td>
 				</tr>
 				<tr>
 					<td colspan="3">
-						<label for="endereco">Endereço: </label>
+						<label for="endereco">Endereï¿½o: </label>
 						<sf:input id="endereco" path="endereco" />
 					</td>
 					
@@ -162,7 +164,7 @@
 				</tr>
 				
 				<tr>
-					<td colspan="10" style="background: aqua;">Dados Relacionados à Igreja</td>
+					<td colspan="10" style="background: aqua;">Dados Relacionados ï¿½ Igreja</td>
 				</tr>
 				<tr>
 					<td colspan="3">
@@ -183,7 +185,7 @@
 					</td>
 					
 					<td>
-						<label for="batismo_espirito">Batismo-Espírito: </label>
+						<label for="batismo_espirito">Batismo-Espï¿½rito: </label>
 						<sf:select path="batismo_espirito">
 							<option value="${membro.batismo_espirito}">${membro.batismo_espirito}</option>
 							<c:forEach items="${batismoEspirito}" var="batismoEspirito">
@@ -195,7 +197,7 @@
 					</td>
 					
 					<td>
-						<label for="funcao">Função: </label>
+						<label for="funcao">Funï¿½ï¿½o: </label>
 						<sf:select path="funcao">
 							<option value="${membro.funcao}">${membro.funcao}</option>
 							<c:forEach items="${funcoes}" var="funcoes">
@@ -210,7 +212,7 @@
 				<tr>
 					
 					<td>
-						<label for="funcao">Situação: </label>
+						<label for="funcao">Situaï¿½ï¿½o: </label>
 						<sf:select path="situacao">
 							<option value="${membro.situacao}">${membro.situacao}</option>
 							<c:forEach items="${situacao}" var="situacao">
@@ -222,7 +224,7 @@
 					</td>
 					
 					<td colspan="3">
-						<label for="descricao">Descrição:</label>
+						<label for="descricao">Descriï¿½ï¿½o:</label>
 						<sf:textarea id="descricao" path="descricao"/>
 					</td>
 				</tr>
@@ -241,7 +243,7 @@
       var imagem = new Image();
       imagem.src = 'fotoMembro?idmembro=' + idmembro;
       imagem.onload = function() {
-         // Começar na posição 20
+         // Comeï¿½ar na posiï¿½ï¿½o 20
          var x = 0;
          context.drawImage(imagem, x, 0, 128, 180);
          

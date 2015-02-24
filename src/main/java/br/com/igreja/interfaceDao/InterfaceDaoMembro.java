@@ -19,6 +19,12 @@ public interface InterfaceDaoMembro extends InterfaceDaoBase<Membro> {
 	
 	List<Membro> getIgrejaJson(int idigreja);
 	
-	List<Membro> getIgrejaSedeJson(int idigreja);
+	List<Membro> getIgrejaSedeJson(int idigreja, int first, int max);
+	
+	Number getQuantidadeResgistrosMembrosJson(int idigreja);
+	
+	Number getQuantidadeResgistrosTodosOsMembrosJson();
+	
+	List<Membro> getTodosOsMembrosJson(int first, int max);
 
 }

@@ -1,8 +1,10 @@
 package br.com.igreja;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,7 +12,11 @@ import java.util.Map;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 
+import org.eclipse.persistence.jaxb.MarshallerProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import br.com.igreja.entidades.Dizimo;
 import br.com.igreja.entidades.Igreja;
 import br.com.igreja.entidades.Membro;
 import br.com.igreja.enuns.BatismoEspirito;
@@ -33,6 +40,7 @@ import br.com.igreja.enuns.Membro_Situacao;
 import br.com.igreja.enuns.OrgaoRg;
 import br.com.igreja.enuns.Sexo;
 import br.com.igreja.enuns.TipoIgreja;
+import br.com.igreja.interfaceDao.InterfaceDaoDizimo;
 import br.com.igreja.interfaceDao.InterfaceDaoIgreja;
 import br.com.igreja.interfaceDao.InterfaceDaoMembro;
 import br.com.igreja.interfaceDao.InterfaceDaoUsuario;
@@ -51,6 +59,8 @@ public class MembroControler {
 	private InterfaceDaoUsuario usuarioDao;
 	@Autowired
 	private ServletContext servletContext;
+	@Autowired
+	private InterfaceDaoDizimo dizimoDao;
 	
 	private String nomeUsuario;
 	
@@ -121,34 +131,151 @@ public class MembroControler {
 		}
 	}
 	
-	@RequestMapping("ListaTodosMembros")
-	public String ListaTodosOsMembros(Model model) {
-		
-		model.addAttribute("membros", membroDao.getLista(Membro.class));
-		return "membro/ListaMembro";
-	}
-	
-	@RequestMapping(value = "ListaTodosMembrosJson/{idmembro}", method = RequestMethod.GET, produces =  "application/json")
+	@RequestMapping(value = "ListaTodosMembros/{first}/{max}", method = RequestMethod.GET, produces =  "application/json; charset=UTF-8")
 	@ResponseBody
-	public List<Membro> getMembro(@PathVariable("idmembro") int idmembro) {
+	public String ListaTodosOsMembros(@PathVariable("first") int first, @PathVariable("max") int max) throws JAXBException {
 		
-		List<Membro> membros = membroDao.getIdmembro(idmembro);
-		return membros;
+		List<Membro> membros = membroDao.getTodosOsMembrosJson(first, max);
+		
+		JAXBContext jc = JAXBContext.newInstance(Membro.class);
+
+		Marshaller mar = jc.createMarshaller();
+
+		mar.setProperty(MarshallerProperties.MEDIA_TYPE, "application/json");
+		
+		mar.setProperty(MarshallerProperties.JSON_INCLUDE_ROOT, true);
+
+		mar.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+		ByteArrayOutputStream result = new ByteArrayOutputStream();
+		mar.marshal(membros, result);
+
+		return result.toString();
 	}
 	
-	@RequestMapping(value = "ListaMembrosIgrejaJson/{idigreja}", method = RequestMethod.GET, produces =  "application/json")
+	//Gera Membro no formato Json - Obs.: Gera membro e todos os dizimos relacionados a esse membro
+	@RequestMapping(value = "membrosJson/{idmembro}", method = RequestMethod.GET, produces =  "application/json; charset=UTF-8")
+	@ResponseBody
+	public String getMembro(@PathVariable("idmembro") int idmembro) throws JAXBException {
+		
+		Membro membros = membroDao.getMembro(idmembro);
+		
+		byte[] b = null;
+		
+		membros.setFoto(b);
+		
+		JAXBContext jc = JAXBContext.newInstance(Membro.class);
+
+		Marshaller mar = jc.createMarshaller();
+
+		mar.setProperty(MarshallerProperties.MEDIA_TYPE, "application/json");
+
+		mar.setProperty(MarshallerProperties.JSON_INCLUDE_ROOT, true);
+
+		mar.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+		ByteArrayOutputStream result = new ByteArrayOutputStream();
+		mar.marshal(membros, result);
+
+		return result.toString();
+		
+	}
+	
+	//Gera Membro no formato XML - Obs.: Gera membro e todos os dizimos relacionados a esse membro
+	@RequestMapping(value = "membroXML/{idmembro}", method = RequestMethod.GET, produces =  "application/xml; charset=UTF-8")
+	@ResponseBody
+	public String getMembroXML(@PathVariable("idmembro") int idmembro) throws JAXBException {
+		
+		Membro membros = membroDao.getMembro(idmembro);
+		
+		byte[] b = null;
+		
+		membros.setFoto(b);
+		
+		JAXBContext jc = JAXBContext.newInstance(Membro.class);
+		
+		Marshaller mar = jc.createMarshaller();
+		
+		mar.setProperty(MarshallerProperties.MEDIA_TYPE, "application/xml");
+
+		mar.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+		
+		ByteArrayOutputStream result = new ByteArrayOutputStream();
+		mar.marshal(membros, result);
+
+		return result.toString();
+		
+	}
+	
+	@RequestMapping(value = "ListaMembrosIgrejaJson/{idigreja}", method = RequestMethod.GET, produces =  "application/json; charset=UTF-8")
 	@ResponseBody
 	public List<Membro> getMembroPorIgreja(@PathVariable("idigreja") int idigreja) {
 		List<Membro> membros = membroDao.getIgrejaJson(idigreja);
 		return membros;
 	}
 	
-	@RequestMapping(value = "ListaMembrosIgrejaSedeJson/{idigreja}", method = RequestMethod.GET, produces =  "application/json")
+	@RequestMapping(value = "ListaMembrosIgrejaSedeJson/{idigreja}/{first}/{max}", method = RequestMethod.GET, produces =  "application/json; charset=UTF-8")
 	@ResponseBody
-	public List<Membro> getMembroSedeJson(@PathVariable("idigreja") int idigreja) {
+	public String getMembroSedeJson(@PathVariable("idigreja") int idigreja, @PathVariable("first") int first, 
+									@PathVariable("max") int max) throws JAXBException {
 		
-		List<Membro> membros = membroDao.getIgrejaSedeJson(idigreja);
-		return membros;
+		List<Membro> membros = membroDao.getIgrejaSedeJson(idigreja,first,max);
+		
+		JAXBContext jc = JAXBContext.newInstance(Membro.class);
+
+		Marshaller mar = jc.createMarshaller();
+
+		mar.setProperty(MarshallerProperties.MEDIA_TYPE, "application/json");
+		
+		mar.setProperty(MarshallerProperties.JSON_INCLUDE_ROOT, true);
+
+		mar.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+		ByteArrayOutputStream result = new ByteArrayOutputStream();
+		mar.marshal(membros, result);
+
+		return result.toString();
+		
+	}
+	
+	@RequestMapping(value = "listaIgrejaPorTipo", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
+	@ResponseBody
+	public String getListaIgrejaPorTipo() throws JAXBException{
+		
+		List<Igreja> igrejas = igrejaDao.getTipo(TipoIgreja.CONGREGAÇÃO);
+		
+		JAXBContext jc = JAXBContext.newInstance(Igreja.class);
+
+		Marshaller mar = jc.createMarshaller();
+
+		mar.setProperty(MarshallerProperties.MEDIA_TYPE, "application/json");
+		
+		mar.setProperty(MarshallerProperties.JSON_INCLUDE_ROOT, true);
+
+		mar.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+		ByteArrayOutputStream result = new ByteArrayOutputStream();
+		mar.marshal(igrejas, result);
+
+		return result.toString();
+	}
+	
+	@RequestMapping(value = "QuantidadeListaMembro/{idigreja}", method = RequestMethod.GET, produces =  "application/json; charset=UTF-8")
+	@ResponseBody
+	public List<String> getMembroQuantidade(@PathVariable("idigreja") int idigreja) {
+		Number quantidade = membroDao.getQuantidadeResgistrosMembrosJson(idigreja);
+		List<String> qt = new ArrayList<String>();
+		qt.add(quantidade.toString());
+		return qt;
+	}
+	
+	@RequestMapping(value = "QuantidadeRegistroTodosMembros", method = RequestMethod.GET, produces =  "application/json; charset=UTF-8")
+	@ResponseBody
+	public List<String> getQuantidadeRegistrosTodosMembros(){
+		Number quantidade = membroDao.getQuantidadeResgistrosTodosOsMembrosJson();
+		List<String> qt = new ArrayList<String>();
+		qt.add(quantidade.toString());
+		return qt;
 	}
 	
 	@RequestMapping("ListaMembroSede")
@@ -304,10 +431,16 @@ public class MembroControler {
 		return "redirect:ListaMembroSede";
 	}
 	
-	@RequestMapping(value = "RemoveMembro", method = RequestMethod.POST)
-	public void remove(Membro membro, HttpServletResponse response) {
+	@RequestMapping(value = "RemoveMembro/{idmembro}", method = RequestMethod.DELETE, produces = "application/json; charset=UTF-8")
+	@ResponseBody
+	public String remove(@PathVariable("idmembro") int idmembro) {
+		Membro membro = new Membro();
+		Dizimo dizimo = new Dizimo();
+		membro.setIdmembro(idmembro);
+		dizimo.setMembroBean(membro);
+		dizimoDao.excluir(dizimo);
 		membroDao.excluir(membro);
-		response.setStatus(200);
+		return "200";
 	}
 	
 	@RequestMapping("cartaoMembro")

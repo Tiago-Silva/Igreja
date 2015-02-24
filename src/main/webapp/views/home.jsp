@@ -14,7 +14,7 @@
 
 	<c:if test="${param.error == 1}">
 		<div class="erro" align="center">
-			<h3 class="erro">Voc� n�o possui Autoriza��o para acessar o conte�do solicitado!</h3>
+			<h3 class="erro">Você não possui Autorização para acessar o conteúdo solicitado!</h3>
 		</div>
 	</c:if>
 	
@@ -25,7 +25,7 @@
 		
 		<c:if test="${param.error != null}">
 			<div class="erro">
-			Login e/ou Senha inv�lido.
+			Login e/ou Senha inválido.
 			<c:if test="${SPRING_SECURITY_LAST_EXCEPTION != null}">
 			Motivo: <c:out value="#{sessionScope.SPRING_SECURITY_LAST_EXCEPTION.message}"/>
 			</c:if>
@@ -34,7 +34,7 @@
 			
 			<c:if test="${param.logout == 1}">
 			<div class="alert alert-success">
-			Voc� foi desconectado.
+			Você foi desconectado.
 			</div>
 			</c:if>
 		

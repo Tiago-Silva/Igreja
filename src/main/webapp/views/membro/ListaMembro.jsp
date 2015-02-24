@@ -1,8 +1,32 @@
+<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@taglib prefix="sf" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<html>
+<head>
+<title>Insert title here</title>
+</head>
+<script type="text/ng-template" id="modal.html">
+	<div class="modal-header">
+            <h3 class="modal-title" align="center">ConfirmaÃ§Ã£o de exclusÃ£o</h3>
+        </div>
+        <div class="modal-body">
+			<span id="msg">VocÃª realmente deseja excluir o membro(a): </span>
+			<span>{{nomeMembro}}</span>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="ok()">Excluir</button>
+            <button class="btn btn-warning" ng-click="cancel()">Cancelar</button>
+        </div>    
+</script>
 
 <style>
+	@-moz-document url-prefix() {
+	  fieldset { display: table-cell; }
+	}
+	
 	p{
 		padding-top: 15px;
 		font-family: sans-serif, OpenSymbol;
@@ -16,33 +40,18 @@
 		margin: 1px 1px 0 0;
 		padding: 1px;
 	}
+
 </style>
-<script type="text/javascript">
-$(document).ready(function() {
-
-	$.getJSON("ListaMembrosIgrejaSedeJson/1", function(data) {
-
-		var tabela = document.getElementById("tbody");
-		var obj;
+<body ng-controller="listaMembro">
+	
+	<div class="table-responsive pagination pagination-centered" style="width: 100%">
+		<div id="legenda">Lista de Membros Cadastrados - ${igrejaNome} </div>
 		
-		for (var i = 0; i < data.length; i++) {
-			obj = {"membros" : [
-			        				{"idmembro" : data[i][0], "nome" : data[i][1], "cpf" : data[i][2], "rg" : data[i][3], "endereco" : data[i][7],
-				        				"bairro" : data[i][9], "cidade" : data[i][6], "telefone" : data[i][17], "celular" : data[i][19]}
-			        			]};
-
-			console.log(obj.membros[i].nome);
-		}
-
-	});
-});
-</script>
-
-<div align="left" style="padding-left: 2%; width: 100%; padding-right: 2%;">
-	<div align="center" class="ui-tabela" style="width: 100%">
-		<div class="tabH" id="legenda">Lista de Membros Cadastrados - ${igrejaNome} </div>
-
-		<table class="tablesorter">
+		
+		<label for="seach">Itens por pÃ¡gina</label>
+		<input type="number" min="1" max="100" class="form-control" ng-model="pageSize" ng-change="pageChanged()">
+		
+		<table class="table table-striped table-bordered table-hover table-condensed">
 			<thead>
 				<tr>
 					<!-- datatableCount -->
@@ -50,79 +59,70 @@ $(document).ready(function() {
 					<th width="100">Nome</th>
 					<th width="10">CPF</th>
 					<th width="10">RG</th>
-					<th width="100">Endereço</th>
+					<th width="100">EndereÃ§o</th>
 					<th width="100">Bairro</th>
 					<th width="100">Cidade</th>
 					<th width="100">Telefone</th>
 					<th width="100">Celular</th>
-					<th width="10">Situação</th>
-					<th width="100">Igreja</th>
+					<th width="10">SituaÃ§Ã£o</th>
 					<sec:authorize access="hasAnyRole('ROLE_ADMIN_SEDE','ROLE_SECRETARIO_SEDE')">
-					<th width="100">Ações</th>
+					<th width="10">AÃ§Ãµes</th>
 					</sec:authorize>
 				</tr>
 			</thead>
-			<tbody>
+			<tbody ng-repeat="membro in membroSede">
 				<!-- Data Show Row-->
-				<c:forEach items="${membros}" var="membro">
 					<tr class="listas">
 						<td align="center" width="2%" class="qt_total"
-							style="text-align: center; height: 45px;">${membro.idmembro}</td>
-						<td align="center" class="nome_aluno" width="15%">${membro.nome}</td>
-						<td align="center">${membro.cpf}</td>
-						<td align="center">${membro.rg}</td>
-						<td align="center" width="15%">${membro.endereco}</td>
-						<td align="center" width="15%">${membro.bairro}</td>
-						<td align="center" width="5%">${membro.cidade}</td>
-						<td align="center">${membro.telefone}</td>
-						<td align="center">${membro.celular}</td>
-						<td align="center">${membro.situacao}</td>
-						<td align="center" width="5%">${membro.igrejaBean.idigreja}</td>
+							style="text-align: center; height: 45px;">{{membro.membro.idmembro}}</td>
+						<td align="center" class="nome_aluno" width="20%">{{membro.membro.nome}}</td>
+						<td align="center">{{membro.membro.cpf}}</td>
+						<td align="center">{{membro.membro.rg}}</td>
+						<td align="center" width="20%">{{membro.membro.endereco}}</td>
+						<td align="center" width="15%">{{membro.membro.bairro}}</td>
+						<td align="center" width="5%">{{membro.membro.cidade}}</td>
+						<td align="center">{{membro.membro.telefone}}</td>
+						<td align="center">{{membro.membro.celular}}</td>
+						<td align="center">{{membro.membro.situacao}}</td>
 						<sec:authorize access="hasAnyRole('ROLE_ADMIN_SEDE','ROLE_SECRETARIO_SEDE')">
-						<td width="40%"><a href="#" onclick="deletarMembro(${membro.idmembro},'${membro.nome}');">
+						<td width="10%"><a ng-href="" ng-click="deletaMembro('sm',membro.membro)">
 								<img src="<c:url value="/resources/img/icones/delet.png"/>" />
 						</a> &nbsp;|
 							<a
-							href="<c:url value="mostraMembro?idmembro=${membro.idmembro}"/>">
+							href="<c:url value="mostraMembro?idmembro={{membro.membro.idmembro}}"/>">
 								<img src="<c:url value="/resources/img/icones/edit.png"/>" />
 							</a></td>
 						</sec:authorize>
 					</tr>
-				</c:forEach>
 			</tbody>
 			<tfoot>
 				<tr>
-					<td class="pager" colspan="12"><img
-						src="<c:url value="/resources/jquery/tablesorter/pager/icons/first.png"/>"
-						class="first" /> <img
-						src="<c:url value="/resources/jquery/tablesorter/pager/icons/prev.png"/>"
-						class="prev" /> <span class="pagedisplay"></span> <!-- this can be any element, including an input -->
-						<img
-						src="<c:url value="/resources/jquery/tablesorter/pager/icons/next.png"/>"
-						class="next" /> <img
-						src="<c:url value="/resources/jquery/tablesorter/pager/icons/last.png"/>"
-						class="last" /> <select class="pagesize">
-							<option selected="selected" value="05">5</option>
-							<option value="10">10</option>
-							<option value="20">20</option>
-							<option value="30">30</option>
-							<option value="40">40</option>
+					<td colspan="12">
+						<pagination total-items="bigTotalItems" ng-change="pageChanged()" ng-model="currentPage" max-size="maxSize" 
+					class="pagination-sm" boundary-links="true" rotate="false" num-pages="numPages"></pagination>
+					</td>
 				</tr>
 			</tfoot>
 		</table>
+		
+		<div ng-show="erroMembro != null">
+			<alert type="danger" close="closeAlert($index)">{{erroMembro}}</alert>
+		</div>
 
 	</div>
-</div>
 
 <div class="resumo" align="center">
 	Quantidade de Membros: <span class="total-itens">0</span>
 </div>
 
-<div id="dialog-confirm" title="Confirmação de exclusão"
-	style="display: none">
-	<canvas id="meu_canvas" width="150" height="150"></canvas>
-	<p>
-	<span id="msg">Você realmente deseja excluir o membro(a): </span>
-	<span id="name">0</span>
-	</p>
+<div id="dialog-confirm" title="ConfirmaÃ§Ã£o de exclusÃ£o"
+style="display: none">
+<canvas id="meu_canvas" width="150" height="150"></canvas>
+<p>
+<span id="msg">VocÃª realmente deseja excluir o membro(a): </span>
+<span id="name">0</span>
+</p>
 </div>
+	
+</body>
+</html>
