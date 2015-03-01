@@ -44,6 +44,12 @@
 			<security:intercept-url pattern="/salvaMembro/**" access="hasAnyRole('ROLE_SECRETARIO_SEDE','ROLE_SECRETARIO_CONGREGACAO')"/>
 			<security:intercept-url pattern="**/ListaMembrosIgrejaSedeJson/**" access="hasAnyRole('ROLE_SECRETARIO_SEDE','ROLE_TESOUREIRO_SEDE',
 																		'ROLE_TESOUREIRO_CONGREGACAO','ROLE_SECRETARIO_CONGREGACAO')"/>
+			<security:intercept-url pattern="**/views/Membro/ListaMembro.**/**" access="hasAnyRole('ROLE_SECRETARIO_SEDE','ROLE_TESOUREIRO_SEDE',
+																		'ROLE_TESOUREIRO_CONGREGACAO','ROLE_SECRETARIO_CONGREGACAO')"/>	
+			<security:intercept-url pattern="**/QuantidadeListaMembro/**" access="hasAnyRole('ROLE_SECRETARIO_SEDE','ROLE_TESOUREIRO_SEDE',
+																		'ROLE_TESOUREIRO_CONGREGACAO','ROLE_SECRETARIO_CONGREGACAO')"/>
+			<security:intercept-url pattern="**/igreja/**" access="hasAnyRole('ROLE_SECRETARIO_SEDE','ROLE_TESOUREIRO_SEDE',
+																		'ROLE_TESOUREIRO_CONGREGACAO','ROLE_SECRETARIO_CONGREGACAO')"/>																																			
 			
 			<security:intercept-url pattern="/ListaObreirosSede/**" access="hasAnyRole('ROLE_SECRETARIO_SEDE','ROLE_TESOUREIRO_SEDE')"/>
 			<security:intercept-url pattern="/ListaObreiros/**" access="hasAnyRole('ROLE_SECRETARIO_SEDE','ROLE_TESOUREIRO_SEDE',
@@ -66,6 +72,7 @@
 		<property name="url" value="jdbc:mysql://localhost:3306/igreja"/>
 	</bean>
 	-->
+	
 	<security:authentication-manager>
 		<security:authentication-provider>
 			<security:password-encoder hash="md5"/>

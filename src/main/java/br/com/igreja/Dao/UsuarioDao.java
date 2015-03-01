@@ -3,12 +3,18 @@ package br.com.igreja.Dao;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.ParameterExpression;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.stereotype.Repository;
@@ -38,13 +44,26 @@ public class UsuarioDao extends GenericJPADao<Usuario> implements InterfaceDaoUs
 	@Transactional(propagation=Propagation.REQUIRED, isolation=Isolation.SERIALIZABLE, readOnly=true)
 	@Override
 	public Usuario getUsuario(String login, String senha) {
-		String jpql = "Select a from Usuario a where a.login = :login "
-				+ " and a.senha = :senha";
-		TypedQuery<Usuario> query = em.createQuery(jpql, Usuario.class);
-		query.setParameter("login", login);
-		query.setParameter("senha", DigestUtils.md5(senha));
-		Usuario usuarios = query.getSingleResult();
-		return usuarios;
+		CriteriaBuilder builder = em.getCriteriaBuilder();
+        CriteriaQuery<Usuario> criteriaQuery = builder.createQuery(Usuario.class);
+        Root<Usuario> a = criteriaQuery.from(Usuario.class);
+        criteriaQuery.select(a);
+
+        List<Predicate> predicates = new ArrayList<>();
+
+
+        ParameterExpression<String> log = builder.parameter(String.class, "login");
+        ParameterExpression<String> sen = builder.parameter(String.class, "senha");
+        predicates.add(builder.equal(a.get("login"), log));
+        predicates.add(builder.equal(a.get("senha"), sen));
+        criteriaQuery.where(predicates.toArray(new Predicate[0]));
+
+        TypedQuery<Usuario> query = em.createQuery(criteriaQuery);
+        query.setParameter("login", login);
+        query.setParameter("senha", DigestUtils.md5(senha));
+        Usuario usuarios = query.getSingleResult();
+        System.out.println("Login e senha: " + usuarios.getLogin() + "  -" + usuarios.getSenha());
+        return usuarios;
 	}
 
 	@Override

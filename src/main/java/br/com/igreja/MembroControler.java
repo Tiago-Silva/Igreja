@@ -435,10 +435,7 @@ public class MembroControler {
 	@ResponseBody
 	public String remove(@PathVariable("idmembro") int idmembro) {
 		Membro membro = new Membro();
-		Dizimo dizimo = new Dizimo();
 		membro.setIdmembro(idmembro);
-		dizimo.setMembroBean(membro);
-		dizimoDao.excluir(dizimo);
 		membroDao.excluir(membro);
 		return "200";
 	}

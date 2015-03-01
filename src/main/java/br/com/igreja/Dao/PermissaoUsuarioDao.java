@@ -39,7 +39,7 @@ public class PermissaoUsuarioDao extends GenericJPADao<PermissaoUsuario> impleme
 
 	@Override
 	public List<PermissaoUsuario> getIdUsuario(int idusuario) {
-		String jpql = "select a.role from PermissaoUsuario a where a.usuario_idusuario = :idusuario";
+		String jpql = "select a.role from PermissaoUsuario a where a.usuario1.idusuario = :idusuario";
 		Query query = em.createQuery(jpql);
 		query.setParameter("idusuario", idusuario);
 		List<PermissaoUsuario> permissoes = query.getResultList();
