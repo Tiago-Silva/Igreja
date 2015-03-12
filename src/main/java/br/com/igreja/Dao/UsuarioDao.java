@@ -49,7 +49,7 @@ public class UsuarioDao extends GenericJPADao<Usuario> implements InterfaceDaoUs
         Root<Usuario> a = criteriaQuery.from(Usuario.class);
         criteriaQuery.select(a);
 
-        List<Predicate> predicates = new ArrayList<>();
+        List<Predicate> predicates = new ArrayList<Predicate>();
 
 
         ParameterExpression<String> log = builder.parameter(String.class, "login");

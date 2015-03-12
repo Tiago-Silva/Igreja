@@ -93,7 +93,7 @@
 									<hr style="height: 1px;margin-top: 0px; margin-bottom: 0px;"/>
 									<li><a href="<c:url value="pesquisaCartaoMembro"/>">Cartão de Membro</a></li>
 									<hr style="height: 1px;margin-top: 0px; margin-bottom: 0px;"/>
-									<li><a href="<c:url value="pesquisaCartaoMembroPorNome"/>">Cartão-Por Nome</a></li>
+									<li><a href="<c:url value="#/pesquisaCartaoMembroPorNome"/>">Cartão-Por Nome</a></li>
 								</ul>
 							</li>
 							</sec:authorize>

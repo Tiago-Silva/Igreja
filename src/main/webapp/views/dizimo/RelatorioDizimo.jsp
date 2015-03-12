@@ -45,40 +45,36 @@
 </script>
 
 <div align="center" class="ui-widget">
-	<sf:form modelAttribute="caixa" action="${action}" id="formCaixaDizimo"
+	<form action="{{action}}" id="formCaixaDizimo"
 		target="_blank">
 		<fieldset>
-			<legend id="legenda">Gerar Relatório por Mês de acordo com a Igreja
-				Selecionada</legend>
+			<legend>{{legenda}}</legend>
 			<table>
 				<tr>
 					<td colspan="10" style="background: aqua;">Selecione o nome da
 						Igreja</td>
 				</tr>
 				<tr>
-					<td colspan="3"><label for="igreja">Igreja: </label> <sf:select id="idIgreja"
-							path="${idigreja}">
-							<option>..Selecione...</option>
-							<c:forEach items="${igrejas}" var="igreja">
-								<option value="${igreja.idigreja}">
-									<c:out value="${igreja.nome}" />
-								</option>
-							</c:forEach>
-						</sf:select></td>
+					<td colspan="3">
+						<label for="igreja">Igreja: </label> 
+						<select ng-change="selectTodasIgrejas()" ng-model="igreja" ng-options="igreja.igreja.nome for igreja in todasIgrejas">
+							<option value="">..Selecione...</option>
+						</select>
+					</td>
 				</tr>
 				
-				<c:if test="${action == 'cartaoMembroPorNome'}">
-					<tr>
+					<tr ng-show="mostra">
 					<td colspan="10" style="background: aqua;">Selecione o nome do
 						Membro</td>
 					</tr>
 					<tr>
-						<td><label for="membro">Membro: </label> <sf:select id="idmembro"
-								path="idmembro">
-								<option>Selecione...</option>
-							</sf:select></td>
+						<td>
+							<label for="membro">Membro: </label> 
+							<select required="true" ng-change="selectMembroPorIgreja()" ng-model="membro" ng-options="membro.membro.nome for membro in membroPorIgreja">
+								<option value="">..Selecione...</option>
+							</select>
+						</td>
 					</tr>
-				</c:if>
 				
 				<c:if test="${action == 'relatorioDizimo'}">
 					<tr>
@@ -92,7 +88,7 @@
 				</c:if>
 			</table>
 		</fieldset>
-		<button type="submit" id="btSalvar">Pesquisar</button>
+		<button type="submit" class="btn btn-primary" ng-disabled="habilita">Pesquisar</button>
 		<button type="reset" class="btSalvar">Limpar</button>
-	</sf:form>
+	</form>
 </div>

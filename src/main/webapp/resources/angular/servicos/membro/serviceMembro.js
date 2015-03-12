@@ -21,6 +21,14 @@ app.factory('MembroService', function($resource) {
 						},
 						isArray: true
 					},
+					listaMembroParaGerarCartao: {
+						method: 'GET',
+						params: {
+							url: '@url',
+							idigreja: '@idigreja'
+						},
+						isArray: true
+					},
 					quantidadeListaMembro: {
 						method: 'GET',
 						params: {

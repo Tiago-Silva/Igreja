@@ -27,7 +27,7 @@
 					</td>
 					
 					<td class="span2">
-						<label for="orgaorg">Orgï¿½o RG: </label>
+						<label for="orgaorg">Orgão RG: </label>
 						<sf:select path="orgaorg">
 							<option>Selecione...</option>
 							<c:forEach items="${orgaoRg}" var="orgaoRg">

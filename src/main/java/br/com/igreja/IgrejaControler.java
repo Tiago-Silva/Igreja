@@ -1,9 +1,15 @@
 package br.com.igreja;
 
+import java.io.ByteArrayOutputStream;
+import java.util.List;
 import java.util.Map;
 
 import javax.validation.Valid;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 
+import org.eclipse.persistence.jaxb.MarshallerProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,8 +17,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import br.com.igreja.entidades.Igreja;
+import br.com.igreja.entidades.Membro;
 import br.com.igreja.entidades.Pastor;
 import br.com.igreja.enuns.Estados;
 import br.com.igreja.enuns.TipoIgreja;
@@ -61,10 +69,25 @@ public class IgrejaControler {
 		return "redirect:ListaIgreja";
 	}
 	
-	@RequestMapping("ListaIgreja")
-	public String ListaIgreja(Model model) {
-		model.addAttribute("igrejas", igrejaDao.getLista(Igreja.class));
-		return "igreja/ListaIgreja";
+	@RequestMapping(value = "ListaTodasIgrejas", method = RequestMethod.GET, produces =  "application/json; charset=UTF-8")
+	@ResponseBody
+	public String ListaIgreja() throws JAXBException {
+		List<Igreja> igrejas = igrejaDao.getLista(Igreja.class);
+		
+		JAXBContext jc = JAXBContext.newInstance(Igreja.class);
+
+		Marshaller mar = jc.createMarshaller();
+
+		mar.setProperty(MarshallerProperties.MEDIA_TYPE, "application/json");
+		
+		mar.setProperty(MarshallerProperties.JSON_INCLUDE_ROOT, true);
+
+		mar.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+		ByteArrayOutputStream result = new ByteArrayOutputStream();
+		mar.marshal(igrejas, result);
+
+		return result.toString();
 	}
 	
 	@RequestMapping("ListaIgrejaTipo")

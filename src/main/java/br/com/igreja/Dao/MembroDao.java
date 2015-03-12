@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.igreja.entidades.Igreja;
 import br.com.igreja.entidades.Membro;
+import br.com.igreja.entidades.MembroCustomizado;
 import br.com.igreja.enuns.Funcao;
 import br.com.igreja.interfaceDao.InterfaceDaoMembro;
 
@@ -96,6 +97,29 @@ public class MembroDao extends GenericJPADao<Membro> implements InterfaceDaoMemb
 		return membros;
 	}
 	
+	
+	@Transactional(propagation=Propagation.REQUIRED, isolation=Isolation.SERIALIZABLE, readOnly=true)
+	@Override
+	public List<MembroCustomizado> getMembroGeraCartao(int idigreja) {
+		
+		CriteriaBuilder builder = em.getCriteriaBuilder();
+		CriteriaQuery<MembroCustomizado> criteriaQuery = builder.createQuery(MembroCustomizado.class);
+		Root<Membro> a = criteriaQuery.from(Membro.class);
+		criteriaQuery.select(builder.construct(MembroCustomizado.class, a.get("idmembro"), a.get("nome")));
+		
+		List<Predicate> predicates = new ArrayList<Predicate>();
+		
+		
+		ParameterExpression<Integer> exIdigreja = builder.parameter(Integer.class, "igreja_idigreja");
+		predicates.add(builder.equal(a.get("igrejaBean").get("idigreja"), exIdigreja));
+		criteriaQuery.where(predicates.toArray(new Predicate[0]));
+		
+		TypedQuery<MembroCustomizado> query = em.createQuery(criteriaQuery);
+		query.setParameter("igreja_idigreja", idigreja);
+		List<MembroCustomizado> membros = query.getResultList();
+		return membros;
+	}
+	
 	//Usando Criteria do JPA - OBS.: criteria do JPA e não do hibernate
 	//Criteria dar para usar parametros dinamicos
 	@Secured({"ROLE_SECRETARIO_SEDE","ROLE_TESOUREIRO_SEDE","ROLE_TESOUREIRO_CONGREGACAO","ROLE_SECRETARIO_CONGREGACAO"})
@@ -108,7 +132,7 @@ public class MembroDao extends GenericJPADao<Membro> implements InterfaceDaoMemb
 		Root<Membro> a = criteriaQuery.from(Membro.class);
 		criteriaQuery.select(a);
 		
-		List<Predicate> predicates = new ArrayList<>();
+		List<Predicate> predicates = new ArrayList<Predicate>();
 		
 		
 		ParameterExpression<Integer> exIdigreja = builder.parameter(Integer.class, "igreja_idigreja");
@@ -132,7 +156,7 @@ public class MembroDao extends GenericJPADao<Membro> implements InterfaceDaoMemb
 		Root<Membro> a = criteriaQuery.from(Membro.class);
 		criteriaQuery.select(builder.count(a));
 		
-		List<Predicate> predicates = new ArrayList<>();
+		List<Predicate> predicates = new ArrayList<Predicate>();
 		
 		
 		ParameterExpression<Integer> exIdigreja = builder.parameter(Integer.class, "igreja_idigreja");

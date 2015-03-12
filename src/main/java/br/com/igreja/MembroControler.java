@@ -32,6 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
 import br.com.igreja.entidades.Dizimo;
 import br.com.igreja.entidades.Igreja;
 import br.com.igreja.entidades.Membro;
+import br.com.igreja.entidades.MembroCustomizado;
 import br.com.igreja.enuns.BatismoEspirito;
 import br.com.igreja.enuns.EstadoCivil;
 import br.com.igreja.enuns.Estados;
@@ -222,6 +223,29 @@ public class MembroControler {
 		List<Membro> membros = membroDao.getIgrejaSedeJson(idigreja,first,max);
 		
 		JAXBContext jc = JAXBContext.newInstance(Membro.class);
+
+		Marshaller mar = jc.createMarshaller();
+
+		mar.setProperty(MarshallerProperties.MEDIA_TYPE, "application/json");
+		
+		mar.setProperty(MarshallerProperties.JSON_INCLUDE_ROOT, true);
+
+		mar.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+		ByteArrayOutputStream result = new ByteArrayOutputStream();
+		mar.marshal(membros, result);
+
+		return result.toString();
+		
+	}
+	
+	@RequestMapping(value = "ListaMembroGeraCartao/{idigreja}", method = RequestMethod.GET, produces =  "application/json; charset=UTF-8")
+	@ResponseBody
+	public String listMembroGerarCartao(@PathVariable("idigreja") int idigreja) throws JAXBException{
+		
+		List<MembroCustomizado> membros = membroDao.getMembroGeraCartao(idigreja);
+		
+		JAXBContext jc = JAXBContext.newInstance(MembroCustomizado.class);
 
 		Marshaller mar = jc.createMarshaller();
 
@@ -499,16 +523,17 @@ public class MembroControler {
 		return "dizimo/RelatorioDizimo";
 	}
 	
-	@RequestMapping("cartaoMembroPorNome")
-	public void geracartaoMembroPorNome(Membro membro, HttpServletResponse response) throws IOException {
+	@RequestMapping("cartaoMembroPorNome/{idigreja}/{idmembro}")
+	public void geracartaoMembroPorNome(@PathVariable("idigreja") int idigreja, @PathVariable("idmembro") int idmembro, 
+										HttpServletResponse response) throws IOException {
 		
 		try {
 			String nome = servletContext.getRealPath("/resources/ireport/membro/CartaoMembroNome.jasper");
 			Map<String, Object> parametros = new HashMap<String, Object>();
 			Connection connection = new ConnectionFactory().getConnection();
 			
-			parametros.put("Paidigreja", membro.getIgrejaBean().getIdigreja());
-			parametros.put("Paidmembro", membro.getIdmembro());
+			parametros.put("Paidigreja", idigreja);
+			parametros.put("Paidmembro", idmembro);
 			
 			GeradorRelatorio gerador = new GeradorRelatorio(nome, parametros, connection);
 			//Aqui gera o PDF.

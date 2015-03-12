@@ -23,3 +23,51 @@ app.controller('listaBuscaMembro', function($scope, $http, MembroService, $log, 
 	};
 	
 });
+
+app.controller('geraCartaoMembro', function($scope, $http, MembroService, $log, $location) {
+	
+	$scope.mostra = true;
+	
+	$scope.habilita = true;
+	
+	$scope.legenda = "Gerar cartão de membro de acordo com o nome da igreja e do membro";
+	
+	$http.get('ListaTodasIgrejas').success(function(data) {
+		$scope.todasIgrejas = data;
+    });
+	
+	var idigreja = null;
+	
+	function listaMembro(idigreja) {
+    	
+    	$scope.membroPorIgreja = MembroService.listaMembroParaGerarCartao({url: 'ListaMembroGeraCartao', idigreja: idigreja}, function() {
+    		
+    	}, function(error) {
+    		$scope.erroMembro = "Houver um problema na requisição do serviço. Tente mais tarde ou entre em contato com o administrador da aplicação";
+    	});
+    };
+	
+	$scope.selectTodasIgrejas = function() {
+		
+		$scope.habilita = true;
+		
+		idigreja = $scope.igreja.igreja.idigreja;
+		
+		$log.log("idigreja: " + idigreja);
+		
+		listaMembro(idigreja);
+		
+	};
+	
+	var idmembro = null;
+	
+	$scope.selectMembroPorIgreja = function() {
+		
+		idmembro = $scope.membro.membro.idmembro;
+		
+		$scope.action = "cartaoMembroPorNome/" + idigreja + "/" + idmembro;
+		
+		$scope.habilita = false;
+	};
+	
+});

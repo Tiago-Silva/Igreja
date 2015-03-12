@@ -28,6 +28,11 @@ app.config(function($routeProvider) {
 		controller: 'listaMembro'
 	});
 	
+	$routeProvider.when('/pesquisaCartaoMembroPorNome',{
+		templateUrl: '/igreja/views/dizimo/RelatorioDizimo.jsp',
+		controller: 'geraCartaoMembro'
+	});
+	
 	$routeProvider.otherwise({redirectTo: '/'});
 	
 });
