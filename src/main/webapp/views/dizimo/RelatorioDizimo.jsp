@@ -1,50 +1,7 @@
 <%@taglib prefix="sf" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<script type="text/javascript">
-
-	$(document).ready(function() {
-
-		var form = document.getElementById("formCaixaDizimo");
-
-		var url = document.location.host;
-
-		console.log("PathName: " + document.location.pathname);
-		
-		if(form.action == 'http://' + url + '/igreja/cartaoMembroPorNome') {
-
-			var legenda = document.getElementById("legenda");
-			legenda.innerHTML = "Gerar cartão de Membro por Nome";
-			
-			$("#idIgreja").change(function() {
-
-				var idigreja = document.getElementById("idIgreja");
-
-				$.getJSON("ListaMembrosIgrejaJson/" + idigreja.value, function(data) {
-					var idmembro = document.querySelector("#idmembro");
-
-					idmembro.innerHTML = "";
-					
-					for(var i = 0; i < data.length; i++) {
-					    var op = document.createElement('option');
-					    op.text = data[i].pop();
-					    op.value = data[i].shift();
-					    idmembro.add(op,idmembro.selectedIndex);
-					}
-					 
-				});
-			});
-		} else if(form.action == 'http://' + url + '/igreja/cartaoMembro') {
-			
-			var legenda = document.getElementById("legenda");
-			legenda.innerHTML = "Gerar cartão de Membro por igreja - gera cartão de todos os membros da igreja selecionada";
-		}
-		
-	});
-
-</script>
-
-<div align="center" class="ui-widget">
+<div align="center">
 	<form action="{{action}}" id="formCaixaDizimo"
 		target="_blank">
 		<fieldset>
@@ -62,8 +19,9 @@
 						</select>
 					</td>
 				</tr>
-				
-					<tr ng-show="mostra">
+				<span>{{mostra}}</span>
+				<div ng-show="mostra">
+					<tr>
 					<td colspan="10" style="background: aqua;">Selecione o nome do
 						Membro</td>
 					</tr>
@@ -75,20 +33,10 @@
 							</select>
 						</td>
 					</tr>
-				
-				<c:if test="${action == 'relatorioDizimo'}">
-					<tr>
-					<td colspan="10" style="background: aqua;">Digite um Mês com
-						apenas dois caracteres - use números</td>
-					</tr>
-					<tr>
-						<td><label for="mes">Mês </label> <sf:input id="mes"
-								path="mes" /></td>
-					</tr>
-				</c:if>
+				</div>
 			</table>
 		</fieldset>
 		<button type="submit" class="btn btn-primary" ng-disabled="habilita">Pesquisar</button>
-		<button type="reset" class="btSalvar">Limpar</button>
+		<button type="reset"class="btn btn-inverse">Limpar</button>
 	</form>
 </div>

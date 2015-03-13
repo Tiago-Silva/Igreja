@@ -57,6 +57,6 @@
 			</table>
 		</fieldset>
 		<button class="btn btn-primary" ng-click="buscaMembroCongregacao()">Pesquisar</button>
-		<button type="reset" class="btSalvar">Limpar</button>
+		<button type="reset" class="btn btn-inverse">Limpar</button>
 	</form>
 </div>

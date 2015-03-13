@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div align="center" class="ui-widget">
+	<form action="{{action}}" class="form-horizontal"
+		target="_blank">
+		<fieldset>
+			<legend>{{legenda}}</legend>
+			
+		    <div class="row-fluid">
+		    
+			    <div class="span12">
+			    
+			    <div align="left">
+					<div class="span12" style="background: aqua;width: 100%;">
+						<span>Selecione o Nome da Igreja</span>
+					</div>
+					<label for="igreja">Igreja: </label> 
+					<select ng-change="selectTodasIgrejas()" ng-model="igreja" ng-options="igreja.igreja.nome for igreja in todasIgrejas">
+						<option value="">..Selecione...</option>
+					</select>
+				</div>
+				
+				
+				<div align="left" ng-show="false" style="margin-top: 1%;">
+					<div class="span12" style="background: aqua;width: 100%;">
+						<span>Selecione o Nome do Membro</span>
+					</div>
+					<label for="membro">Membro: </label> 
+					<select ng-required="true" ng-change="selectMembroPorIgreja()" ng-model="membro" ng-options="membro.membro.nome for membro in membroPorIgreja">
+						<option value="">..Selecione...</option>
+					</select>
+				</div>
+		    
+		    </div>
+			
+				<c:if test="${action == 'relatorioDizimo'}">
+					<tr>
+					<td colspan="10" style="background: aqua;">Digite um Mês com
+						apenas dois caracteres - use números</td>
+					</tr>
+					<tr>
+						<td><label for="mes">Mês </label> <sf:input id="mes"
+								path="mes" /></td>
+					</tr>
+				</c:if>
+		</fieldset>
+		<button type="submit" class="btn btn-primary" ng-disabled="habilita">Pesquisar</button>
+		<button type="reset"class="btn btn-inverse">Limpar</button>
+	</form>
+	
+	
+	
+
+Click me: <input type="checkbox" ng-model="checked"><br/>
+<div>
+  Show:
+  <div class="check-element animate-show" ng-show="checked">
+    <span class="glyphicon glyphicon-thumbs-up"></span> I show up when your checkbox is checked.
+  </div>
+</div>
+<div>
+  Hide:
+  <div class="check-element animate-show" ng-hide="checked">
+    <span class="glyphicon glyphicon-thumbs-down"></span> I hide when your checkbox is checked.
+  </div>
+</div>
+
+	
+</div>
+</body>
+</html>

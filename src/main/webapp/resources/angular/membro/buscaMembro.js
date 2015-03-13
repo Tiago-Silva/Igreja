@@ -26,17 +26,17 @@ app.controller('listaBuscaMembro', function($scope, $http, MembroService, $log, 
 
 app.controller('geraCartaoMembro', function($scope, $http, MembroService, $log, $location) {
 	
-	$scope.mostra = true;
-	
 	$scope.habilita = true;
 	
-	$scope.legenda = "Gerar cartão de membro de acordo com o nome da igreja e do membro";
+	$scope.mostra = false;
 	
 	$http.get('ListaTodasIgrejas').success(function(data) {
 		$scope.todasIgrejas = data;
     });
 	
 	var idigreja = null;
+	
+	var idmembro = null;
 	
 	function listaMembro(idigreja) {
     	
@@ -47,27 +47,49 @@ app.controller('geraCartaoMembro', function($scope, $http, MembroService, $log, 
     	});
     };
 	
-	$scope.selectTodasIgrejas = function() {
-		
-		$scope.habilita = true;
-		
-		idigreja = $scope.igreja.igreja.idigreja;
-		
-		$log.log("idigreja: " + idigreja);
-		
-		listaMembro(idigreja);
-		
-	};
-	
-	var idmembro = null;
-	
-	$scope.selectMembroPorIgreja = function() {
-		
-		idmembro = $scope.membro.membro.idmembro;
-		
-		$scope.action = "cartaoMembroPorNome/" + idigreja + "/" + idmembro;
-		
-		$scope.habilita = false;
-	};
-	
+    
+    if($location.url() == '/pesquisaCartaoMembroPorNome') {
+    	
+    	$log.log($scope.mostra);
+    	
+    	$scope.legenda = "Gerar cartão de membro de acordo com o nome da igreja e do membro";
+    	
+    	$scope.selectTodasIgrejas = function() {
+    		
+    		$scope.habilita = true;
+    		
+    		idigreja = $scope.igreja.igreja.idigreja;
+    		
+    		$log.log("idigreja: " + idigreja);
+    		
+    		listaMembro(idigreja);
+    		
+    	};
+    	
+    	$scope.selectMembroPorIgreja = function() {
+    		
+    		idmembro = $scope.membro.membro.idmembro;
+    		
+    		$scope.action = "cartaoMembroPorNome/" + idigreja + "/" + idmembro;
+    		
+    		$scope.habilita = false;
+    	};
+    	
+    } else if ($location.url() == '/pesquisaCartaoMembro') {
+    	
+    	$log.log($scope.mostra);
+    	
+    	$scope.legenda = "Gerar cartão de membro de acordo com a igreja - gera de todos os membros da igreja selecionada";
+    	
+    	$scope.selectTodasIgrejas = function() {
+    		
+    		$scope.habilita = false;
+    		
+    		idigreja = $scope.igreja.igreja.idigreja;
+    		
+    		$scope.action = "cartaoMembro/" + idigreja;
+    	};
+    }
+    
+    
 });

@@ -33,6 +33,11 @@ app.config(function($routeProvider) {
 		controller: 'geraCartaoMembro'
 	});
 	
+	$routeProvider.when('/pesquisaCartaoMembro',{
+		templateUrl: '/igreja/views/dizimo/RelatorioDizimo.jsp',
+		controller: 'geraCartaoMembro'
+	});
+	
 	$routeProvider.otherwise({redirectTo: '/'});
 	
 });

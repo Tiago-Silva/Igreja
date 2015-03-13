@@ -464,15 +464,15 @@ public class MembroControler {
 		return "200";
 	}
 	
-	@RequestMapping("cartaoMembro")
-	public void cartaoMembro(Membro membro, HttpServletResponse response) throws IOException {
+	@RequestMapping("cartaoMembro/{idigreja}")
+	public void cartaoMembro(@PathVariable("idigreja") int idigreja, HttpServletResponse response) throws IOException {
 		
 		try {
 			String nome = servletContext.getRealPath("/resources/ireport/membro/CartaoMembro.jasper");
 			Map<String, Object> parametros = new HashMap<String, Object>();
 			Connection connection = new ConnectionFactory().getConnection();
 			
-			parametros.put("Paidigreja", membro.getIgrejaBean().getIdigreja());
+			parametros.put("Paidigreja", idigreja);
 			
 			GeradorRelatorio gerador = new GeradorRelatorio(nome, parametros, connection);
 			//Aqui gera o PDF.
