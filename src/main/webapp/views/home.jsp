@@ -3,14 +3,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page session="false"%>
-<html>
-<head>
+
 <link rel="stylesheet"
 	href="<c:url value="/resources/css/customizado/Logincss.css"/>" />
-<title>Home</title>
-
-</head>
-<body onload='document.f.j_username.focus();'>
 
 	<c:if test="${param.error == 1}">
 		<div class="erro" align="center">
@@ -58,5 +53,3 @@
 		</div>
 	</div>
 	</sec:authorize>
-</body>
-</html>

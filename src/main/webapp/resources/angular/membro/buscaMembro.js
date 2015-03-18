@@ -28,8 +28,6 @@ app.controller('geraCartaoMembro', function($scope, $http, MembroService, $log, 
 	
 	$scope.habilita = true;
 	
-	$scope.mostra = false;
-	
 	$http.get('ListaTodasIgrejas').success(function(data) {
 		$scope.todasIgrejas = data;
     });
@@ -49,7 +47,7 @@ app.controller('geraCartaoMembro', function($scope, $http, MembroService, $log, 
 	
     
     if($location.url() == '/pesquisaCartaoMembroPorNome') {
-    	
+    	$scope.habilitaSelect = false;
     	$log.log($scope.mostra);
     	
     	$scope.legenda = "Gerar cartão de membro de acordo com o nome da igreja e do membro";
@@ -77,6 +75,7 @@ app.controller('geraCartaoMembro', function($scope, $http, MembroService, $log, 
     	
     } else if ($location.url() == '/pesquisaCartaoMembro') {
     	
+    	$scope.habilitaSelect = true;
     	$log.log($scope.mostra);
     	
     	$scope.legenda = "Gerar cartão de membro de acordo com a igreja - gera de todos os membros da igreja selecionada";

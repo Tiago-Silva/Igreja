@@ -19,21 +19,18 @@
 						</select>
 					</td>
 				</tr>
-				<span>{{mostra}}</span>
-				<div ng-show="mostra">
-					<tr>
-					<td colspan="10" style="background: aqua;">Selecione o nome do
-						Membro</td>
-					</tr>
-					<tr>
-						<td>
-							<label for="membro">Membro: </label> 
-							<select required="true" ng-change="selectMembroPorIgreja()" ng-model="membro" ng-options="membro.membro.nome for membro in membroPorIgreja">
-								<option value="">..Selecione...</option>
-							</select>
-						</td>
-					</tr>
-				</div>
+				<tr ng-show="habilitaSelect">
+				<td colspan="10" style="background: aqua;">Selecione o nome do
+					Membro</td>
+				</tr>
+				<tr ng-show="habilitaSelect">
+					<td>
+						<label for="membro">Membro: </label> 
+						<select ng-disabled="habilitaSelect" required="true" ng-change="selectMembroPorIgreja()" ng-model="membro" ng-options="membro.membro.nome for membro in membroPorIgreja">
+							<option value="">..Selecione...</option>
+						</select>
+					</td>
+				</tr>
 			</table>
 		</fieldset>
 		<button type="submit" class="btn btn-primary" ng-disabled="habilita">Pesquisar</button>

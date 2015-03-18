@@ -38,6 +38,11 @@ app.config(function($routeProvider) {
 		controller: 'geraCartaoMembro'
 	});
 	
+	$routeProvider.when('/MembroCadastro',{
+		templateUrl: '/igreja/views/membro/MembroCadastro.jsp',
+		controller: 'MembroCadastro'
+	});
+	
 	$routeProvider.otherwise({redirectTo: '/'});
 	
 });

@@ -1,13 +1,9 @@
-<!DOCTYPE html>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@taglib prefix="sf" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-<html>
-<head>
-<title>Insert title here</title>
-</head>
+
 <script type="text/ng-template" id="modal.html">
 	<div class="modal-header">
             <h3 class="modal-title" align="center">Confirmação de exclusão</h3>
@@ -42,7 +38,6 @@
 	}
 
 </style>
-<body ng-controller="listaMembro">
 	
 	<div class="table-responsive pagination pagination-centered" style="width: 100%">
 		<div id="legenda">Lista de Membros Cadastrados - ${igrejaNome} </div>
@@ -123,6 +118,3 @@ style="display: none">
 <span id="name">0</span>
 </p>
 </div>
-	
-</body>
-</html>

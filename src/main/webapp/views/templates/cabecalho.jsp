@@ -33,7 +33,7 @@
 									<hr style="height: 1px;margin-top: 0px; margin-bottom: 0px;"/>
 									<li><a href="<c:url value="IgrejaCadastro"/>">Igrejas</a></li>
 									<hr style="height: 1px;margin-top: 0px; margin-bottom: 0px;"/>
-									<li><a href="<c:url value="MembroCadastro"/>">Membros</a></li>
+									<li><a href="<c:url value="#/MembroCadastro"/>">Membros</a></li>
 									<hr style="height: 1px;margin-top: 0px; margin-bottom: 0px;"/>
 									<li><a href="<c:url value="UsuarioCadastro"/>">Usuário</a></li>
 								</ul>

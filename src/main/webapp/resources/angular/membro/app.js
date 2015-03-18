@@ -23,7 +23,7 @@ app.controller('listaMembro', function($scope, $http, MembroService, $log, $moda
     		$promise.then(
     			function(data) {
     				$scope.bigTotalItems = data * 2;
-    				$log.log("Data: " + data);
+    				$log.log("Quantida Lista Membro: " + data);
     			},
     			function(error) {
     				$scope.erroMembro = "Houver um problema no serviço. Tente mais tarde ou entre em contato com o administrador da aplicação";
@@ -143,6 +143,49 @@ app.controller('menu', function($scope, $log) {
 	  
 });
 
+
+app.controller('MembroCadastro', function($scope, $log, $resource, $http) {
+	
+    function listaUF() {
+    	$http.get('resources/angular/enuns/estadoJson.json').success(function(data) {
+    		$scope.estadoJson = data;
+        });
+    };
+    
+    function listaEstadoCivil() {
+    	$http.get('resources/angular/enuns/estadoCivilJson.json').success(function(estadoCivil) {
+    		$scope.estadoCivil = estadoCivil;
+        });
+    };
+    
+    function listaSexo() {
+    	$scope.sexo = [
+	    	               {
+	    	            	   sexo: "MASCULINO"
+	    	               },
+	    	               {
+	    	            	   sexo: "FEMININO"
+	    	               }
+    	              ];
+    };
+    
+    listaUF();
+    listaEstadoCivil();
+    listaSexo();
+    
+    $scope.salvaMembro = function() {
+    	
+    	var membro = {
+    		nome : $scope.nome,
+    		cpf : $scope.cpf,
+    		rg : $scope.rg,
+    		igrejaBean : $scope.igreja
+    	};
+    	
+    	
+    };
+	
+});
 /* Retorna uma lista de membro por igreja no formato json usando $http
 app.controller('listaMembro', function($scope, $http, $resource) {
    

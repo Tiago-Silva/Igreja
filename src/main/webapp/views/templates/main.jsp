@@ -11,6 +11,23 @@
     <meta name="description" content="">
     <meta name="author" content="Tiago Silva">
     
+    <style type="text/css">
+    	
+    	    /* Desktop maiores */
+	    @media (min-width: 1200px) { 
+	    	
+	    }
+	     
+	    /* tables em formato porta retrato até os desktos no formato paisagem */
+	    @media (min-width: 768px) and (max-width: 979px) { ... }
+	     
+	    /* dispositivo em paisagem até os tablets em formato porta-retrato */
+	    @media (max-width: 767px) { ... }
+	     
+	    /* dispositivo no formato paisagem e abaixos */
+	    @media (max-width: 480px) { ... }
+    </style>
+    
 	<!-- Jquery do easy-dataTable 
 	<script src="<c:url value="/resources/jquery/dataTable/easy.datatable.js"/>" type="text/javascript" ></script>
 	<script src="<c:url value="/resources/jquery/dataTable/easy.datatable.min_garble.js"/>" type="text/javascript" ></script>
@@ -88,9 +105,9 @@
 	
 	<title><tiles:getAsString name="titulo" /></title>
 </head>
-<body class="container">
+<body>
 	
-	<div class="container">
+	<div class="container-fluid">
 		
 		<header>
 			<tiles:insertAttribute name="cabecalho"/>

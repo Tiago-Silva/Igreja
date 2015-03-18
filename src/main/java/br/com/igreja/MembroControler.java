@@ -23,11 +23,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.google.gson.Gson;
 
 import br.com.igreja.entidades.Dizimo;
 import br.com.igreja.entidades.Igreja;
@@ -130,6 +133,12 @@ public class MembroControler {
 		} else {
 			return "redirect:ListaTodosMembros";
 		}
+	}
+	
+	@RequestMapping(value = "salvaMembroJson", method = RequestMethod.POST)
+	@ResponseBody
+	public void salvaMembroJson(@RequestBody Membro membro) {
+		membroDao.salvar(membro);
 	}
 	
 	@RequestMapping(value = "ListaTodosMembros/{first}/{max}", method = RequestMethod.GET, produces =  "application/json; charset=UTF-8")
@@ -286,20 +295,26 @@ public class MembroControler {
 	
 	@RequestMapping(value = "QuantidadeListaMembro/{idigreja}", method = RequestMethod.GET, produces =  "application/json; charset=UTF-8")
 	@ResponseBody
-	public List<String> getMembroQuantidade(@PathVariable("idigreja") int idigreja) {
+	public String getMembroQuantidade(@PathVariable("idigreja") int idigreja) {
 		Number quantidade = membroDao.getQuantidadeResgistrosMembrosJson(idigreja);
 		List<String> qt = new ArrayList<String>();
 		qt.add(quantidade.toString());
-		return qt;
+		
+		Gson json = new Gson();
+		
+		return json.toJson(qt);
 	}
 	
 	@RequestMapping(value = "QuantidadeRegistroTodosMembros", method = RequestMethod.GET, produces =  "application/json; charset=UTF-8")
 	@ResponseBody
-	public List<String> getQuantidadeRegistrosTodosMembros(){
+	public String getQuantidadeRegistrosTodosMembros(){
 		Number quantidade = membroDao.getQuantidadeResgistrosTodosOsMembrosJson();
 		List<String> qt = new ArrayList<String>();
 		qt.add(quantidade.toString());
-		return qt;
+		
+		Gson json = new Gson();
+		
+		return json.toJson(qt);
 	}
 	
 	@RequestMapping("ListaMembroSede")
